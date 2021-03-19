@@ -8,15 +8,17 @@ namespace Task1
 {
     public class State
     {
-        private Catalog catalog;
-        private int amount;
+        private Catalog catalog; //certain products
+        private int amount; //Amount of product in stock
         private double price;
+        private DateTime purchaseDate;
 
-        public State(Catalog catalog, int amount, double price)
+        public State(Catalog catalog, int amount, double price, DateTime purchaseDate)
         {
             this.catalog = catalog;
             this.amount = amount;
             this.price = price;
+            this.purchaseDate = purchaseDate;
         }
 
         public Catalog Catalog { get; set; }
@@ -25,6 +27,8 @@ namespace Task1
 
         public double Price { get; set; }
 
-        public string All { get => catalog.All + " " + amount + " " + price; }
+        public DateTime PurchaseDate { get; set; }
+
+        public string All { get => catalog.All + " " + amount + " " + price + " " + purchaseDate; }
     }
 }

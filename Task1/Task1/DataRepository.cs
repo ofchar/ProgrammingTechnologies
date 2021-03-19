@@ -60,12 +60,70 @@ namespace Task1
 
 
         #region Catalog
+        public void AddCatalog(Catalog catalog)
+        {
+            context.catalogs.Add(catalog);
+        }
 
+        public Catalog GetCatalog(int pos)
+        {
+            return context.catalogs[pos];
+        }
+
+        public IEnumerable<Catalog> GetAllCatalogs()
+        {
+            return context.catalogs;
+        }
+
+        public void DeleteCatalog(Catalog catalog)
+        {
+            //Todo: make sure that catalog can be removed
+
+            context.catalogs.Remove(catalog);
+        }
+
+        public void DeleteCatalog(int id)
+        {
+            Catalog catalog = GetCatalog(id);
+
+            //Todo: make sure that catalog can be removed
+
+            context.catalogs.Remove(catalog);
+        }
         #endregion
 
 
         #region Event
+        public void AddEvent(Event e)
+        {
+            context.events.Add(e);
+        }
 
+        public Event GetEvent(int position)
+        {
+            return context.events[position];
+        }
+
+        public IEnumerable<Event> GetAllStates()
+        {
+            return context.events;
+        }
+
+        public void DeleteEvent(Event e)
+        {
+            //Todo: make sure that event can be removed
+
+            context.events.Remove(e);
+        }
+
+        public void DeleteEvent(int position)
+        {
+            Event e = GetEvent(position);
+
+            //Todo: make sure that event can be removed
+
+            context.events.Remove(e);
+        }
         #endregion
 
 

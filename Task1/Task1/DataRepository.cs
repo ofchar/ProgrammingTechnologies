@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1
 {
-    class DataRepository
+    public class DataRepository
     {
         private DataContext context;
 

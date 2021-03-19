@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1
 {
-    class DataService
+    public class DataService
     {
         private DataRepository repository;
 
@@ -129,5 +129,51 @@ namespace Task1
         public void AddState(Catalog catalog, int amount, double price) => repository.AddState(new State(catalog, amount, price));
         #endregion
 
+        #region Retrieve relationships
+        public List<Event> EventsForUser(User user)
+        {
+            List<Event> result = new List<Event>();
+
+            foreach(Event e in repository.GetAllEvents())
+            {
+                if(e.User.Equals(user))
+                {
+                    result.Add(e);
+                }
+            }
+
+            return result;
+        }
+
+        public List<Event> EventsForState(State state)
+        {
+            List<Event> result = new List<Event>();
+
+            foreach(Event e in repository.GetAllEvents())
+            {
+                if(e.State.Equals(state))
+                {
+                    result.Add(e);
+                }
+            }
+
+            return result;
+        }
+
+        public List<State> StatesForCatalog(Catalog catalog)
+        {
+            List<State> result = new List<State>();
+
+            foreach(State state in repository.GetAllStates())
+            {
+                if(state.Catalog.Equals(catalog))
+                {
+                    result.Add(state);
+                }
+            }
+
+            return result;
+        }
+        #endregion
     }
 }

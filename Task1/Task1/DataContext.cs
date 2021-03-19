@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1
 {
-    class DataContext
+    public class DataContext
     {
         public List<User> users = new List<User>();
         public List<Catalog> catalogs = new List<Catalog>();

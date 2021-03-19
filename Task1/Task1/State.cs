@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1
 {
-    class State
+    public class State
     {
         private Catalog catalog;
         private int amount;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1
 {
-    class Event
+    public class Event
     {
         private User user;
         private State state;

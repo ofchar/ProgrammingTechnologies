@@ -24,5 +24,7 @@ namespace Task1
         public int Amount { get; set; }
 
         public double Price { get; set; }
+
+        public string All { get => catalog.All + " " + amount + " " + price; }
     }
 }

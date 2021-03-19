@@ -24,5 +24,7 @@ namespace Task1
         public string Genus { get; set; }
 
         public int Height { get; set; }
+
+        public string All { get => name + " " + genus + " " + height; }
     }
 }

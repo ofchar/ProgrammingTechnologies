@@ -25,5 +25,7 @@ namespace Task1
 
         public string Uuid { get; set; }
 
+        public string All { get => uuid + " " + firstName + " " + lastName; }
+
     }
 }

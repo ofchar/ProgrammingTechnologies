@@ -24,5 +24,7 @@ namespace Task1
         public State State { get; set; }
 
         public DateTime PurchaseDate { get; set; }
+
+        public string All { get => user.All + " " + state.All + " " + purchaseDate; }
     }
 }

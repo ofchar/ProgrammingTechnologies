@@ -104,7 +104,7 @@ namespace Task1
             return context.events[position];
         }
 
-        public IEnumerable<Event> GetAllStates()
+        public IEnumerable<Event> GetAllEvents()
         {
             return context.events;
         }

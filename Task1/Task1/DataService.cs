@@ -47,6 +47,68 @@ namespace Task1
         }
         #endregion
 
+        #region Search
+        public List<User> SearchUser(string query)
+        {
+            List<User> results = new List<User>();
+
+            foreach(User user in repository.GetAllUsers())
+            {
+                if(user.All.Contains(query))
+                {
+                    results.Add(user);
+                }
+            }
+
+            return results;
+        }
+
+        public List<Catalog> SearchCatalog(string query)
+        {
+            List<Catalog> results = new List<Catalog>();
+
+            foreach (Catalog catalog in repository.GetAllCatalogs())
+            {
+                if (catalog.All.Contains(query))
+                {
+                    results.Add(catalog);
+                }
+            }
+
+            return results;
+        }
+
+        public List<State> SearchState(string query)
+        {
+            List<State> results = new List<State>();
+
+            foreach (State state in repository.GetAllStates())
+            {
+                if (state.All.Contains(query))
+                {
+                    results.Add(state);
+                }
+            }
+
+            return results;
+        }
+
+        public List<Event> SearchEvent(string query)
+        {
+            List<Event> results = new List<Event>();
+
+            foreach (Event e in repository.GetAllEvents())
+            {
+                if (e.All.Contains(query))
+                {
+                    results.Add(e);
+                }
+            }
+
+            return results;
+        }
+        #endregion
+
         #region Add
         public void AddUser(User user) => repository.AddUser(user);
 

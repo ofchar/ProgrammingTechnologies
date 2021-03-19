@@ -11,12 +11,14 @@ namespace Task1
         private string name;
         private string genus;
         private int height;
+        private string uuid;
 
-        public Catalog(string name, string genus, int height)
+        public Catalog(string name, string genus, int height, string uuid)
         {
             this.name = name;
             this.genus = genus;
             this.height = height;
+            this.uuid = uuid;
         }
 
         public string Name { get; set; }
@@ -25,6 +27,8 @@ namespace Task1
 
         public int Height { get; set; }
 
-        public string All { get => name + " " + genus + " " + height; }
+        public string Uuid { get; set; }
+
+        public string All { get => name + " " + genus + " " + height + " " + uuid; }
     }
 }

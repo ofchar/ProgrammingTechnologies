@@ -8,27 +8,27 @@ namespace Task1
 {
     public class State
     {
-        private Catalog catalog; //certain products
-        private int amount; //Amount of product in stock
-        private double price;
-        private DateTime purchaseDate;
+        public Catalog Catalog { get; set; } //Certain product
 
-        public State(Catalog catalog, int amount, double price, DateTime purchaseDate)
-        {
-            this.catalog = catalog;
-            this.amount = amount;
-            this.price = price;
-            this.purchaseDate = purchaseDate;
-        }
-
-        public Catalog Catalog { get; set; }
-
-        public int Amount { get; set; }
+        public int Amount { get; set; } //Amount of product in stock
 
         public double Price { get; set; }
 
         public DateTime PurchaseDate { get; set; }
 
-        public string All { get => catalog.All + " " + amount + " " + price + " " + purchaseDate; }
+
+        public State(Catalog catalog, int amount, double price, DateTime purchaseDate)
+        {
+            Catalog = catalog;
+            Amount = amount;
+            Price = price;
+            PurchaseDate = purchaseDate;
+        }
+
+
+        public override string ToString() 
+        { 
+            return Catalog.ToString() + " " + Amount + " " + Price + " " + PurchaseDate; 
+        }
     }
 }

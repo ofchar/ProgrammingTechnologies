@@ -9,12 +9,15 @@ namespace Task1
     public class DataRepository
     {
         private DataContext context;
+        private IDataFill fill;
 
-        public DataRepository(DataContext context)
+        public DataRepository(DataContext context, IDataFill fill)
         {
             this.context = context;
+            this.fill = fill;
         }
 
+        public void FillData() => fill.Fill(context);
 
         //C.R.U.D.
         #region User

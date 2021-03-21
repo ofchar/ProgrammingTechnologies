@@ -21,28 +21,28 @@ namespace Task1
         {
             foreach(User user in users)
             {
-                Console.WriteLine(user.All);
+                Console.WriteLine(user.ToString());
             }
         }
         public void Display(IEnumerable<Catalog> catalogs)
         {
             foreach (Catalog catalog in catalogs)
             {
-                Console.WriteLine(catalog.All);
+                Console.WriteLine(catalog.ToString());
             }
         }
         public void Display(IEnumerable<State> states)
         {
             foreach (State state in states)
             {
-                Console.WriteLine(state.All);
+                Console.WriteLine(state.ToString());
             }
         }
         public void Display(IEnumerable<Event> events)
         {
             foreach (Event e in events)
             {
-                Console.WriteLine(e.All);
+                Console.WriteLine(e.ToString());
             }
         }
         #endregion
@@ -54,7 +54,7 @@ namespace Task1
 
             foreach(User user in repository.GetAllUsers())
             {
-                if(user.All.Contains(query))
+                if(user.ToString().Contains(query))
                 {
                     results.Add(user);
                 }
@@ -69,7 +69,7 @@ namespace Task1
 
             foreach (Catalog catalog in repository.GetAllCatalogs())
             {
-                if (catalog.All.Contains(query))
+                if (catalog.ToString().Contains(query))
                 {
                     results.Add(catalog);
                 }
@@ -84,7 +84,7 @@ namespace Task1
 
             foreach (State state in repository.GetAllStates())
             {
-                if (state.All.Contains(query))
+                if (state.ToString().Contains(query))
                 {
                     results.Add(state);
                 }
@@ -99,7 +99,7 @@ namespace Task1
 
             foreach (Event e in repository.GetAllEvents())
             {
-                if (e.All.Contains(query))
+                if (e.ToString().Contains(query))
                 {
                     results.Add(e);
                 }
@@ -122,11 +122,11 @@ namespace Task1
         #region Create
         public void AddUser(string firstName, string lastName, string uuid) => repository.AddUser(new User(firstName, lastName, uuid));
 
-        public void AddCatalog(string name, string genus, int height) => repository.AddCatalog(new Catalog(name, genus, height));
+        public void AddCatalog(string name, string genus, int height, string uuid) => repository.AddCatalog(new Catalog(name, genus, height, uuid));
 
         public void AddEvent(User user, State state, DateTime purchaseDate) => repository.AddEvent(new Event(user, state, purchaseDate));
 
-        public void AddState(Catalog catalog, int amount, double price) => repository.AddState(new State(catalog, amount, price));
+        public void AddState(Catalog catalog, int amount, double price, DateTime purchaseDate) => repository.AddState(new State(catalog, amount, price, purchaseDate));
         #endregion
 
         #region Retrieve relationships

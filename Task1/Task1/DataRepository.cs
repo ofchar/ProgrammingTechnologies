@@ -73,6 +73,19 @@ namespace Task1
             return context.catalogs[pos];
         }
 
+        public Catalog GetCatalog(string uuid)
+        {
+            foreach (var c in context.catalogs)
+            {
+                if (c.Uuid == uuid)
+                {
+                    return c;
+                }
+            }
+
+            throw new Exception("There is no such Catalog");
+        }
+
         public IEnumerable<Catalog> GetAllCatalogs()
         {
             return context.catalogs;
@@ -85,9 +98,9 @@ namespace Task1
             context.catalogs.Remove(catalog);
         }
 
-        public void DeleteCatalog(int id)
+        public void DeleteCatalog(string uuid)
         {
-            Catalog catalog = GetCatalog(id);
+            Catalog catalog = GetCatalog(uuid);
 
             //Todo: make sure that catalog can be removed
 
@@ -148,7 +161,13 @@ namespace Task1
 
         public void DeleteState(State state)
         {
-            //Todo: make sure that state can be removed
+            foreach(Event e in context.events)
+            {
+                if(e.State.Equals(state))
+                {
+                    throw new Exception("State is used");
+                }
+            }
 
             context.states.Remove(state);
         }

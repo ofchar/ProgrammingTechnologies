@@ -44,18 +44,30 @@ namespace Task1
             return context.users;
         }
 
-        public void DeleteUser(User w)
+        public void DeleteUser(User user)
         {
-            //Todo: make sure that user can be removed
+            foreach (Event e in context.events)
+            {
+                if (e.User == user)
+                {
+                    throw new Exception("This user is connected to at least one event");
+                }
+            }
 
-            context.users.Remove(w);
+            context.users.Remove(user);
         }
 
         public void DeleteUser(string uuid)
         {
             User user = GetUser(uuid);
 
-            //Todo: make sure that user can be removed
+            foreach (Event e in context.events)
+            {
+                if (e.User == user)
+                {
+                    throw new Exception("This user is connected to at least one event");
+                }
+            }
 
             context.users.Remove(user);
         }
@@ -93,7 +105,13 @@ namespace Task1
 
         public void DeleteCatalog(Catalog catalog)
         {
-            //Todo: make sure that catalog can be removed
+            foreach (State state in context.states)
+            {
+                if(state.Catalog == catalog)
+                {
+                    throw new Exception("This Catalog is connected to at least one state");
+                }
+            }
 
             context.catalogs.Remove(catalog);
         }
@@ -102,7 +120,13 @@ namespace Task1
         {
             Catalog catalog = GetCatalog(uuid);
 
-            //Todo: make sure that catalog can be removed
+            foreach (State state in context.states)
+            {
+                if (state.Catalog == catalog)
+                {
+                    throw new Exception("This Catalog is connected to at least one state");
+                }
+            }
 
             context.catalogs.Remove(catalog);
         }
@@ -127,16 +151,12 @@ namespace Task1
 
         public void DeleteEvent(Event e)
         {
-            //Todo: make sure that event can be removed
-
             context.events.Remove(e);
         }
 
         public void DeleteEvent(int position)
         {
             Event e = GetEvent(position);
-
-            //Todo: make sure that event can be removed
 
             context.events.Remove(e);
         }
@@ -176,7 +196,13 @@ namespace Task1
         {
             State state = GetState(position);
 
-            //Todo: make sure that state can be removed
+            foreach (Event e in context.events)
+            {
+                if (e.State.Equals(state))
+                {
+                    throw new Exception("State is used");
+                }
+            }
 
             context.states.Remove(state);
         }

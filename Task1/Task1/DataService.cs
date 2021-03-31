@@ -47,6 +47,58 @@ namespace Task1
         }
         #endregion
 
+        #region Get
+        
+        #region User
+        public User GetUser(string uuid)
+        {
+            return repository.GetUser(uuid);
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return (List<User>)repository.GetAllUsers();
+        }
+        #endregion
+
+        #region Catalog
+        public Catalog GetCatalog(string uuid)
+        {
+            return repository.GetCatalog(uuid);
+        }
+
+        public List<Catalog> GetAllCatalogs()
+        {
+            return (List<Catalog>)repository.GetAllCatalogs();
+        }
+        #endregion
+
+        #region State
+        public State GetState(int position)
+        {
+            return repository.GetState(position);
+        }
+
+        public List<State> GetAllStates()
+        {
+            return (List<State>)repository.GetAllStates();
+        }
+        #endregion
+
+        #region Event
+        public Event GetEvent(int position)
+        {
+            return repository.GetEvent(position);
+        }
+
+        public List<Event> GetAllEvents()
+        {
+            return (List<Event>)repository.GetAllEvents();
+        }
+        #endregion
+
+        #endregion
+
         #region Search
         public List<User> SearchUser(string query)
         {

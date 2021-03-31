@@ -44,6 +44,13 @@ namespace Task1
             return context.users;
         }
 
+        public void UpdateUser(string uuid, User user)
+        {
+            User temp = context.users.First(u => u.Uuid == uuid);
+
+            temp = user;
+        }
+
         public void DeleteUser(User user)
         {
             foreach (Event e in context.events)
@@ -101,6 +108,13 @@ namespace Task1
         public IEnumerable<Catalog> GetAllCatalogs()
         {
             return context.catalogs;
+        }
+
+        public void UpdateCatalog(string uuid, Catalog catalog)
+        {
+            Catalog temp = context.catalogs.First(c => c.Uuid == uuid);
+
+            temp = catalog;
         }
 
         public void DeleteCatalog(Catalog catalog)

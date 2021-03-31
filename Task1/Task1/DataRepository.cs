@@ -48,7 +48,9 @@ namespace Task1
         {
             User temp = context.users.First(u => u.Uuid == uuid);
 
-            temp = user;
+            temp.FirstName = user.FirstName;
+            temp.LastName = user.LastName;
+            temp.Uuid = user.Uuid;
         }
 
         public void DeleteUser(User user)
@@ -114,7 +116,10 @@ namespace Task1
         {
             Catalog temp = context.catalogs.First(c => c.Uuid == uuid);
 
-            temp = catalog;
+            temp.Name = catalog.Name;
+            temp.Genus = catalog.Genus;
+            temp.Height = catalog.Height;
+            temp.Uuid = catalog.Uuid;
         }
 
         public void DeleteCatalog(Catalog catalog)

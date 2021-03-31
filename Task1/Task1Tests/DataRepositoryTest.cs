@@ -64,6 +64,22 @@ namespace Task1Tests
         }
 
         [TestMethod]
+        public void UpdateUserTest()
+        {
+            DataContext context = new DataContext();
+            FillWithConstants fill = new FillWithConstants();
+
+            DataRepository repository = new DataRepository(context, fill);
+            repository.FillData();
+
+            User user = new User("Test", "Teest", "3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b");
+
+            repository.UpdateUser("3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b", user);
+
+            Assert.AreEqual(user.ToString(), repository.GetUser("3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b").ToString());
+        }
+
+        [TestMethod]
         public void DeleteUserTest()
         {
             DataContext context = new DataContext();
@@ -149,6 +165,22 @@ namespace Task1Tests
             {
                 Assert.AreEqual(tmp[i].ToString(), expected[i].ToString());
             }
+        }
+
+        [TestMethod]
+        public void UpdateCatalogTest()
+        {
+            DataContext context = new DataContext();
+            FillWithConstants fill = new FillWithConstants();
+
+            DataRepository repository = new DataRepository(context, fill);
+            repository.FillData();
+
+            Catalog catalog = new Catalog("Test", "Teest", 12, "87c07f4d-d0ee-4202-97b8-b8da14a22eb7");
+
+            repository.UpdateCatalog("87c07f4d-d0ee-4202-97b8-b8da14a22eb7", catalog);
+
+            Assert.AreEqual(catalog.ToString(), repository.GetCatalog("87c07f4d-d0ee-4202-97b8-b8da14a22eb7").ToString());
         }
 
         [TestMethod]

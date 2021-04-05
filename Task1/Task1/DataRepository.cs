@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1
 {
-    public class DataRepository
+    public class DataRepository : IDataApi
     {
         private DataContext context;
         private IDataFill fill;

@@ -226,7 +226,7 @@ namespace Task1Tests
             DataRepository repository = new DataRepository(context, fill);
 
             Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5, 30, DateTime.Now);
+            State state = new State(catalog, 5, 30);
 
             repository.AddState(state);
 
@@ -253,13 +253,13 @@ namespace Task1Tests
 
             DataRepository repository = new DataRepository(context, fill);
 
-            repository.AddState(new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"), 2, 20, DateTime.Today));
-            repository.AddState(new State(new Catalog("Sansevieria trifasciata", "Sansevieria", 30, "2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"), 3, 30, DateTime.Today));
+            repository.AddState(new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"), 2, 20));
+            repository.AddState(new State(new Catalog("Sansevieria trifasciata", "Sansevieria", 30, "2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"), 3, 30));
 
 
             List<State> expected = new List<State>();
-            expected.Add(new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"), 2, 20, DateTime.Today));
-            expected.Add(new State(new Catalog("Sansevieria trifasciata", "Sansevieria", 30, "2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"), 3, 30, DateTime.Today));
+            expected.Add(new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"), 2, 20));
+            expected.Add(new State(new Catalog("Sansevieria trifasciata", "Sansevieria", 30, "2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"), 3, 30));
 
             List<State> tmp = repository.GetAllStates().ToList<State>();
 
@@ -278,7 +278,7 @@ namespace Task1Tests
             DataRepository repository = new DataRepository(context, fill);
 
             Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5, 30, DateTime.Now);
+            State state = new State(catalog, 5, 30);
 
             repository.AddState(state);
 
@@ -299,13 +299,13 @@ namespace Task1Tests
 
             User user = new User("Testomir", "Testowy", Guid.NewGuid().ToString());
             Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5, 30, DateTime.Now);
+            State state = new State(catalog, 5, 30);
             Event e = new Event(user, state, DateTime.Now);
 
             repository.AddState(state);
             repository.AddEvent(e);
 
-            Assert.AreEqual(5, repository.GetState(0).Amount);
+            Assert.AreEqual(4, repository.GetState(0).Amount);
 
             Assert.ThrowsException<Exception>(() => repository.DeleteState(state));
         }
@@ -323,7 +323,7 @@ namespace Task1Tests
 
             User user = new User("Testomir", "Testowy", Guid.NewGuid().ToString());
             Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5, 30, DateTime.Now);
+            State state = new State(catalog, 5, 30);
             Event e = new Event(user, state, DateTime.Now);
 
             repository.AddEvent(e);
@@ -353,10 +353,10 @@ namespace Task1Tests
 
             DataRepository repository = new DataRepository(context, fill);
 
-            State state = new State(new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString()), 5, 30, DateTime.Today);
+            State state = new State(new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString()), 5, 30);
             Event e = new Event(new User("Testomir", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Today);
 
-            State state2 = new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, Guid.NewGuid().ToString()), 4, 60, DateTime.Today);
+            State state2 = new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, Guid.NewGuid().ToString()), 4, 60);
             Event e2 = new Event(new User("Jan", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Today);
 
             repository.AddEvent(e);
@@ -382,7 +382,7 @@ namespace Task1Tests
 
             DataRepository repository = new DataRepository(context, fill);
 
-            State state = new State(new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString()), 5, 30, DateTime.Today);
+            State state = new State(new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString()), 5, 30);
             Event e = new Event(new User("Testomir", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Today);
 
             repository.AddEvent(e);

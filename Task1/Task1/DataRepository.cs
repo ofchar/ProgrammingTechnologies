@@ -155,6 +155,15 @@ namespace Task1
         #region Event
         public void AddEvent(Event e)
         {
+            if(e.State.Amount < 1)
+            {
+                throw new Exception("Warehouse empty");
+            }
+            else
+            {
+                e.State.Amount--;
+            }
+
             context.events.Add(e);
         }
 
@@ -191,6 +200,11 @@ namespace Task1
         public State GetState(int position)
         {
             return context.states[position];
+        }
+
+        public State GetCurrentCatalogState(Catalog catalog)
+        {
+            return context.states.FindLast(state => state.Catalog == catalog);
         }
 
         public IEnumerable<State> GetAllStates()

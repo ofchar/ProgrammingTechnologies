@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1
 {
-    interface IDataApi
+    public interface IDataApi
     {
         #region User
         void AddUser(User user);
@@ -17,9 +17,9 @@ namespace Task1
 
         void UpdateUser(string uuid, User user);
 
-        void DeleteUser(User user);
-
         void DeleteUser(string uuid);
+
+        void DeleteUser(User user);
         #endregion
 
 
@@ -34,9 +34,9 @@ namespace Task1
 
         void UpdateCatalog(string uuid, Catalog catalog);
 
-        void DeleteCatalog(Catalog catalog);
-
         void DeleteCatalog(string uuid);
+
+        void DeleteCatalog(Catalog catalog);
         #endregion
 
 
@@ -57,6 +57,8 @@ namespace Task1
         void AddState(State state);
 
         State GetState(int position);
+
+        State GetCurrentCatalogState(Catalog catalog);
 
         IEnumerable<State> GetAllStates();
 

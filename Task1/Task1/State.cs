@@ -14,21 +14,17 @@ namespace Task1
 
         public double Price { get; set; }
 
-        public DateTime PurchaseDate { get; set; }
-
-
-        public State(Catalog catalog, int amount, double price, DateTime purchaseDate)
+        public State(Catalog catalog, int amount, double price)
         {
             Catalog = catalog;
             Amount = amount;
             Price = price;
-            PurchaseDate = purchaseDate;
         }
 
 
         public override string ToString() 
-        { 
-            return Catalog.ToString() + " " + Amount + " " + Price + " " + PurchaseDate; 
+        {
+            return Catalog.ToString() + " " + Amount + " " + Price;
         }
     }
 }

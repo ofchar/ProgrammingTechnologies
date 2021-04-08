@@ -29,11 +29,11 @@ namespace Task1
             #endregion
 
             #region States
-            context.states.Add(new State(context.catalogs[0], 12, 25.0, DateTime.Today));
-            context.states.Add(new State(context.catalogs[1], 3, 22.0, DateTime.Today));
-            context.states.Add(new State(context.catalogs[2], 8, 30.0, DateTime.Today));
-            context.states.Add(new State(context.catalogs[3], 2, 130.0, DateTime.Today));
-            context.states.Add(new State(context.catalogs[4], 18, 52.0, DateTime.Today));
+            context.states.Add(new State(context.catalogs[0], 12, 25.0));
+            context.states.Add(new State(context.catalogs[1], 3, 22.0));
+            context.states.Add(new State(context.catalogs[2], 8, 30.0));
+            context.states.Add(new State(context.catalogs[3], 2, 130.0));
+            context.states.Add(new State(context.catalogs[4], 18, 52.0));
             #endregion
 
             #region Events

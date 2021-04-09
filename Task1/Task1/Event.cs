@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class Event
+    public abstract class Event
     {
         public User User { get; set; }
 
         public State State { get; set; }
 
-        public DateTime PurchaseDate { get; set; }
+        public DateTime Timestamp { get; set; }
 
 
-        public Event(User user, State state, DateTime purchaseDate)
+        public Event(User user, State state, DateTime timestamp)
         {
             User = user;
             State = state;
-            PurchaseDate = purchaseDate;
+            Timestamp = timestamp;
         }
 
 
         public override string ToString() 
         { 
-            return User.ToString() + " " + State.ToString() + " " + PurchaseDate; 
+            return User.ToString() + " " + State.ToString() + " " + Timestamp; 
         }
     }
 }

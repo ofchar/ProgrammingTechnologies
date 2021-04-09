@@ -118,7 +118,7 @@ namespace Data
 
             temp.Name = catalog.Name;
             temp.Genus = catalog.Genus;
-            temp.Height = catalog.Height;
+            temp.Price = catalog.Price;
             temp.Uuid = catalog.Uuid;
         }
 

@@ -12,23 +12,23 @@ namespace Data
 
         public string Genus { get; set; }
 
-        public int Height { get; set; }
+        public double Price { get; set; }
 
         public string Uuid { get; set; }
 
 
-        public Catalog(string name, string genus, int height, string uuid)
+        public Catalog(string name, string genus, double price, string uuid)
         {
             Name = name;
             Genus = genus;
-            Height = height;
+            Price = price;
             Uuid = uuid;
         }
 
 
         public override string ToString() 
         { 
-            return Name + " " + Genus + " " + Height + " " + Uuid;
+            return Name + " " + Genus + " " + Price + " " + Uuid;
         }
     }
 }

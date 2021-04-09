@@ -197,7 +197,7 @@ namespace Task1Tests
 
             repository.AddCatalog(catalog);
 
-            Assert.AreEqual(100, repository.GetCatalog(newCatalogUuid).Height);
+            Assert.AreEqual(100, repository.GetCatalog(newCatalogUuid).Price);
 
             repository.DeleteCatalog(newCatalogUuid);
 

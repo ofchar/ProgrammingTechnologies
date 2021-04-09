@@ -30,17 +30,17 @@ namespace Data.Fill
             #endregion
 
             #region States
-            context.states.Add(new State(context.catalogs[0], 12, 25.0));
-            context.states.Add(new State(context.catalogs[1], 3, 22.0));
-            context.states.Add(new State(context.catalogs[2], 8, 30.0));
-            context.states.Add(new State(context.catalogs[3], 2, 130.0));
-            context.states.Add(new State(context.catalogs[4], 18, 52.0));
+            context.states.Add(new State(context.catalogs[0], 12));
+            context.states.Add(new State(context.catalogs[1], 3));
+            context.states.Add(new State(context.catalogs[2], 8));
+            context.states.Add(new State(context.catalogs[3], 2));
+            context.states.Add(new State(context.catalogs[4], 18));
             #endregion
 
             #region Events
             for (int c = 0; c < 5; c++) //<-- actually it is c#, not c++.
             {
-                context.events.Add(new Event(context.users[c], context.states[c], DateTime.Today));
+                context.events.Add(new BuyEvent(context.users[c], context.states[c], DateTime.Today));
             }
             #endregion
         }

@@ -12,19 +12,16 @@ namespace Data
 
         public int Amount { get; set; } //Amount of product in stock
 
-        public double Price { get; set; }
-
-        public State(Catalog catalog, int amount, double price)
+        public State(Catalog catalog, int amount)
         {
             Catalog = catalog;
             Amount = amount;
-            Price = price;
         }
 
 
         public override string ToString() 
         {
-            return Catalog.ToString() + " " + Amount + " " + Price;
+            return Catalog.ToString() + " " + Amount;
         }
     }
 }

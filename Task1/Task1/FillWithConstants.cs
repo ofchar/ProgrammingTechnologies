@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task1
+namespace Data.Fill
 {
     public class FillWithConstants : IDataFill
     {

@@ -10,11 +10,11 @@ namespace Logic
     interface ILogicApi
     {
         #region Relations
-        List<Event> EventsForUser(User user);
+        List<Event> EventsForUser(string userUuid);
+        
+        List<Event> EventsForCatalog(string catalogUuid);
 
-        List<State> StatesForCatalog(Catalog catalog);
-
-        State CurrentCatalogState(Catalog catalog);
+        State CurrentCatalogState(string catalogUuid);
         #endregion
 
 
@@ -29,19 +29,32 @@ namespace Logic
         #endregion
 
 
-        #region Create
-        void CreateUser(string firstName, string lastName);
+        #region Actions
+        void Buy(string userUuid, string catalogUuid, DateTime purchaseDate, int amount);
 
-        void CreateCatalog(string name, string genus, int height);
-
-        void CreateState(Catalog catalog, int amount);
+        void Restock(string supplierUuid, string catalogUuid, DateTime restockDate, int amount);
         #endregion
 
 
-        #region Actions
-        void Buy(string userUuid, string catalogUuid, DateTime purchaseDate);
+        #region User crud
+        void CreateUser(string firstName, string lastName);
 
-        void Restock(string supplierUuid, string catalogUuid, DateTime restockDate, int restockAmount);
+        void CreateUser(string firstName, string lastName, string uuid);
+
+        User getUser(string uuid);
+
+        void DeleteUser(string uuid);
+        #endregion
+
+
+        #region Catalog crud
+        void CreateCatalog(string name, string genus, int price);
+        
+        void CreateCatalog(string name, string genus, int price, string uuid);
+
+        Catalog getCatalog(string uuid);
+
+        void DeleteCatalog(string uuid);
         #endregion
     }
 }

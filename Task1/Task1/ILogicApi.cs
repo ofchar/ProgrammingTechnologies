@@ -41,7 +41,9 @@ namespace Logic
 
         void CreateUser(string firstName, string lastName, string uuid);
 
-        User getUser(string uuid);
+        User GetUser(string uuid);
+
+        IEnumerable<User> GetAllUsers();
 
         void DeleteUser(string uuid);
         #endregion
@@ -52,7 +54,9 @@ namespace Logic
         
         void CreateCatalog(string name, string genus, int price, string uuid);
 
-        Catalog getCatalog(string uuid);
+        Catalog GetCatalog(string uuid);
+        
+        IEnumerable<Catalog> GetAllCatalogs();
 
         void DeleteCatalog(string uuid);
         #endregion

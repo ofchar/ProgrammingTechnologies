@@ -44,13 +44,13 @@ namespace Logic
 
         public List<Event> EventsForCatalog(string catalogUuid)
         {
-            List<State> result = new List<State>();
+            List<Event> result = new List<Event>();
 
-            foreach (State state in repository.GetAllStates())
+            foreach (Event e in repository.GetAllEvents())
             {
-                if (state.Catalog.Uuid == catalogUuid)
+                if (e.State.Catalog.Uuid == catalogUuid)
                 {
-                    result.Add(state);
+                    result.Add(e);
                 }
             }
 
@@ -59,7 +59,7 @@ namespace Logic
 
         public State CurrentCatalogState(string catalogUuid)
         {
-            return repository.GetCurrentCatalogState(catalogUuid);
+            return repository.GetCatalogState(catalogUuid);
         }
         #endregion
 
@@ -132,7 +132,7 @@ namespace Logic
         {
             User user = repository.GetUser(userUuid);
 
-            State state = repository.GetCurrentCatalogState(catalogUuid);
+            State state = repository.GetCatalogState(catalogUuid);
 
             if (state.Amount < amount)
             {
@@ -148,7 +148,7 @@ namespace Logic
         public void Restock(string supplierUuid, string catalogUuid, DateTime restockDate, int amount)
         {
             User user = repository.GetUser(supplierUuid);
-            State state = repository.GetCurrentCatalogState(catalogUuid);
+            State state = repository.GetCatalogState(catalogUuid);
 
             int newAmount = state.Amount + amount;
 
@@ -175,9 +175,14 @@ namespace Logic
             repository.AddUser(createdUser);
         }
 
-        public User getUser(string uuid)
+        public User GetUser(string uuid)
         {
             return repository.GetUser(uuid);
+        }
+
+        public IEnumerable<User> GetAllUsers()
+        {
+            return repository.GetAllUsers();
         }
 
         public void DeleteUser(string uuid)
@@ -188,6 +193,13 @@ namespace Logic
 
 
         #region Catalog crud
+        private void CreateStateForCatalog(Catalog catalog)
+        {
+            State state = new State(catalog, 0);
+
+            repository.AddState(state);
+        }
+
         public void CreateCatalog(string name, string genus, int price)
         {
             string generatedUuid = generateUuid();
@@ -195,6 +207,8 @@ namespace Logic
             Catalog createdCatalog = new Catalog(name, genus, price, generatedUuid);
 
             repository.AddCatalog(createdCatalog);
+
+            CreateStateForCatalog(createdCatalog);
         }
 
         public void CreateCatalog(string name, string genus, int price, string uuid)
@@ -202,11 +216,18 @@ namespace Logic
             Catalog createdCatalog = new Catalog(name, genus, price, uuid);
 
             repository.AddCatalog(createdCatalog);
+
+            CreateStateForCatalog(createdCatalog);
         }
 
-        public Catalog getCatalog(string uuid)
+        public Catalog GetCatalog(string uuid)
         {
             return repository.GetCatalog(uuid);
+        }
+
+        public IEnumerable<Catalog> GetAllCatalogs()
+        {
+            return repository.GetAllCatalogs();
         }
 
         public void DeleteCatalog(string uuid)

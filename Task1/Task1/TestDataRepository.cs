@@ -21,6 +21,8 @@ namespace Data
             states = new List<State>();
         }
 
+
+
         #region User
         public void AddUser(User user)
         {
@@ -39,16 +41,14 @@ namespace Data
 
         public void UpdateUser(string uuid, User user)
         {
-
+            throw new NotImplementedException();
         }
 
         public void DeleteUser(string uuid)
         {
+            User temp = users.First(u => u.Uuid == uuid);
 
-        }
-        public void DeleteUser(User user)
-        {
-
+            users.Remove(temp);
         }
         #endregion
 
@@ -57,11 +57,6 @@ namespace Data
         public void AddCatalog(Catalog catalog)
         {
             catalogs.Add(catalog);
-        }
-
-        public Catalog GetCatalog(int pos)
-        {
-            return new Catalog("name", "genus", 10, "someUuid");
         }
 
         public Catalog GetCatalog(string uuid)
@@ -76,17 +71,14 @@ namespace Data
 
         public void UpdateCatalog(string uuid, Catalog catalog)
         {
-
-        }
-
-        public void DeleteCatalog(Catalog catalog)
-        {
-
+            throw new NotImplementedException();
         }
 
         public void DeleteCatalog(string uuid)
         {
+            Catalog catalog = catalogs.First(c => c.Uuid == uuid);
 
+            catalogs.Remove(catalog);
         }
         #endregion
 
@@ -102,9 +94,9 @@ namespace Data
             User user = new User("name", "lastName", "niceUuid");
 
             Catalog catalog = new Catalog("name", "genus", 2, "catalogsUuid");
-            State state = new State(catalog, 11, 25);
+            State state = new State(catalog, 11);
 
-            return new Event(user, state, new DateTime(2021, 01, 01));
+            return new BuyEvent(user, state, new DateTime(2021, 01, 01));
         }
 
         public IEnumerable<Event> GetAllEvents()
@@ -114,12 +106,12 @@ namespace Data
 
         public void DeleteEvent(Event e)
         {
-
+            throw new NotImplementedException();
         }
 
         public void DeleteEvent(int position)
         {
-
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -134,12 +126,12 @@ namespace Data
         {
             Catalog catalog = new Catalog("name", "genus", 2, "catalogsUuid");
 
-            return new State(catalog, 10, 20);
+            return new State(catalog, 10);
         }
 
-        public State GetCurrentCatalogState(Catalog catalog)
+        public State GetCatalogState(string catalogUuid)
         {
-            return new State(catalog, 10, 20);
+            return states.Last(state => state.Catalog.Uuid == catalogUuid);
         }
 
         public IEnumerable<State> GetAllStates()
@@ -147,14 +139,16 @@ namespace Data
             return states;
         }
 
-        public void DeleteState(State state)
+        public void UpdateState(string catalogUuid, int newAmount)
         {
+            State temp = states.FindLast(state => state.Catalog.Uuid == catalogUuid);
 
+            temp.Amount = newAmount;
         }
 
-        public void DeleteState(int position)
+        public void DeleteState(State state)
         {
-
+            throw new NotImplementedException();
         }
         #endregion
     }

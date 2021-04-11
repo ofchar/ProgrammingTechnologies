@@ -8,7 +8,7 @@ namespace Data
 {
     public interface IDataApi
     {
-        #region User
+        #region User CRUD
         void AddUser(User user);
 
         User GetUser(string uuid);
@@ -18,15 +18,11 @@ namespace Data
         void UpdateUser(string uuid, User user);
 
         void DeleteUser(string uuid);
-
-        void DeleteUser(User user);
         #endregion
 
 
-        #region Catalog
+        #region Catalog CRUD
         void AddCatalog(Catalog catalog);
-
-        Catalog GetCatalog(int pos);
 
         Catalog GetCatalog(string uuid);
 
@@ -35,12 +31,10 @@ namespace Data
         void UpdateCatalog(string uuid, Catalog catalog);
 
         void DeleteCatalog(string uuid);
-
-        void DeleteCatalog(Catalog catalog);
         #endregion
 
 
-        #region Event
+        #region Event CR(U)D
         void AddEvent(Event e);
 
         Event GetEvent(int position);
@@ -53,18 +47,18 @@ namespace Data
         #endregion
 
 
-        #region State
+        #region State CRUD
         void AddState(State state);
 
         State GetState(int position);
 
-        State GetCurrentCatalogState(Catalog catalog);
+        State GetCatalogState(string catalogUuid);
 
         IEnumerable<State> GetAllStates();
 
-        void DeleteState(State state);
+        void UpdateState(string catalogUuid, int newAmount);
 
-        void DeleteState(int position);
+        void DeleteState(State state);
         #endregion
 
     }

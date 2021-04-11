@@ -9,30 +9,39 @@ namespace Data
     public class DataRepository : IDataApi
     {
         private DataContext context;
-        private IDataFill fill;
 
-        public DataRepository(DataContext context, IDataFill fill)
+        public DataRepository(DataContext context)
         {
             this.context = context;
-            this.fill = fill;
         }
 
-        public void FillData() => fill.Fill(context);
+
 
         //C.R.U.D.
         #region User
+        private bool doesUserExist(string uuid)
+        {
+            return context.users.Exists(user => user.Uuid == uuid);
+        }
+
+
         public void AddUser(User user)
         {
+            if(doesUserExist(user.Uuid))
+            {
+                throw new Exception("User with this uuid already exists");
+            }
+
             context.users.Add(user);
         }
 
         public User GetUser(string uuid)
         {
-            foreach (var u in context.users)
+            foreach (User user in context.users)
             {
-                if (u.Uuid == uuid)
+                if (user.Uuid == uuid)
                 {
-                    return u;
+                    return user;
                 }
             }
 
@@ -53,19 +62,6 @@ namespace Data
             temp.Uuid = user.Uuid;
         }
 
-        public void DeleteUser(User user)
-        {
-            foreach (Event e in context.events)
-            {
-                if (e.User == user)
-                {
-                    throw new Exception("This user is connected to at least one event");
-                }
-            }
-
-            context.users.Remove(user);
-        }
-
         public void DeleteUser(string uuid)
         {
             User user = GetUser(uuid);
@@ -84,14 +80,20 @@ namespace Data
 
 
         #region Catalog
-        public void AddCatalog(Catalog catalog)
+        private bool doesCatalogExist(string uuid)
         {
-            context.catalogs.Add(catalog);
+            return context.catalogs.Exists(catalog => catalog.Uuid == uuid);
         }
 
-        public Catalog GetCatalog(int pos)
+
+        public void AddCatalog(Catalog catalog)
         {
-            return context.catalogs[pos];
+            if (doesCatalogExist(catalog.Uuid))
+            {
+                throw new Exception("Catalog with this uuid already exists");
+            }
+
+            context.catalogs.Add(catalog);
         }
 
         public Catalog GetCatalog(string uuid)
@@ -122,19 +124,6 @@ namespace Data
             temp.Uuid = catalog.Uuid;
         }
 
-        public void DeleteCatalog(Catalog catalog)
-        {
-            foreach (State state in context.states)
-            {
-                if(state.Catalog == catalog)
-                {
-                    throw new Exception("This Catalog is connected to at least one state");
-                }
-            }
-
-            context.catalogs.Remove(catalog);
-        }
-
         public void DeleteCatalog(string uuid)
         {
             Catalog catalog = GetCatalog(uuid);
@@ -155,20 +144,16 @@ namespace Data
         #region Event
         public void AddEvent(Event e)
         {
-            if(e.State.Amount < 1)
-            {
-                throw new Exception("Warehouse empty");
-            }
-            else
-            {
-                e.State.Amount--;
-            }
-
             context.events.Add(e);
         }
 
         public Event GetEvent(int position)
         {
+            if(position > context.events.Count)
+            {
+                throw new Exception("There is no event at this position");
+            }
+
             return context.events[position];
         }
 
@@ -202,9 +187,11 @@ namespace Data
             return context.states[position];
         }
 
-        public State GetCurrentCatalogState(Catalog catalog)
+        public State GetCatalogState(string catalogUuid)
         {
-            return context.states.FindLast(state => state.Catalog == catalog);
+            State temp = context.states.Last(state => state.Catalog.Uuid == catalogUuid);
+
+            return temp;
         }
 
         public IEnumerable<State> GetAllStates()
@@ -212,26 +199,18 @@ namespace Data
             return context.states;
         }
 
+        public void UpdateState(string catalogUuid, int newAmount)
+        {
+            State temp = GetCatalogState(catalogUuid);
+
+            temp.Amount = newAmount;
+        }
+
         public void DeleteState(State state)
         {
             foreach(Event e in context.events)
             {
                 if(e.State.Equals(state))
-                {
-                    throw new Exception("State is used");
-                }
-            }
-
-            context.states.Remove(state);
-        }
-
-        public void DeleteState(int position)
-        {
-            State state = GetState(position);
-
-            foreach (Event e in context.events)
-            {
-                if (e.State.Equals(state))
                 {
                     throw new Exception("State is used");
                 }

@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="BuyEvent.cs" />
     <Compile Include="Catalog.cs" />
+    <Compile Include="FillWithRandom.cs" />
     <Compile Include="IDataApi.cs" />
     <Compile Include="IDataFill.cs" />
     <Compile Include="DataContext.cs" />

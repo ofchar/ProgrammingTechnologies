@@ -178,7 +178,7 @@ namespace Task1DataTests
 
             Catalog catalog = new Catalog("test", "genus", 12, "uuiiiiiid");
 
-            Assert.ThrowsException<InvalidOperationException>(() => repository.UpdateCatalog("1234567890", catalog));
+            Assert.ThrowsException<Exception>(() => repository.UpdateCatalog("1234567890", catalog));
         }
 
         [TestMethod]

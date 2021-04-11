@@ -46,7 +46,7 @@ namespace Data.Fill
 
                 Catalog catalog = new Catalog(GenerateRandomString(5), GenerateRandomString(10),
                                          GenerateRandomPrice(5, 50), Guid.NewGuid().ToString());
-                context.catalogs.Add(catalog);
+                context.catalogs.Add(catalog.Uuid, catalog);
             }
         }
     }

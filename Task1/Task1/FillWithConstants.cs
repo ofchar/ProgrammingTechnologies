@@ -22,19 +22,28 @@ namespace Data.Fill
             #endregion
 
             #region Catalogs - flowers
-            context.catalogs.Add(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"));
-            context.catalogs.Add(new Catalog("Sansevieria trifasciata", "Sansevieria", 30, "2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"));
-            context.catalogs.Add(new Catalog("Aloe vera", "Aloe", 40, "52c9b0ef-76a2-478c-b8b2-233a416f9f64"));
-            context.catalogs.Add(new Catalog("Monstera deliciosa", "Monstera", 200, "87c07f4d-d0ee-4202-97b8-b8da14a22eb7"));
-            context.catalogs.Add(new Catalog("Monstera adansonii ", "Monstera", 150, "47ddc515-2cbd-450a-83e9-0fd1ea223182"));
+            context.catalogs.Add("6d866448-b7ac-4b03-b5df-e09affd4ec08", 
+                    new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"));
+
+            context.catalogs.Add("2133ae57-1fb3-4f4c-86f5-b1c90beea1a0", 
+                    new Catalog("Sansevieria trifasciata", "Sansevieria", 30, "2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"));
+
+            context.catalogs.Add("52c9b0ef-76a2-478c-b8b2-233a416f9f64",
+                    new Catalog("Aloe vera", "Aloe", 40, "52c9b0ef-76a2-478c-b8b2-233a416f9f64"));
+
+            context.catalogs.Add("87c07f4d-d0ee-4202-97b8-b8da14a22eb7", 
+                    new Catalog("Monstera deliciosa", "Monstera", 200, "87c07f4d-d0ee-4202-97b8-b8da14a22eb7"));
+
+            context.catalogs.Add("47ddc515-2cbd-450a-83e9-0fd1ea223182",
+                    new Catalog("Monstera adansonii ", "Monstera", 150, "47ddc515-2cbd-450a-83e9-0fd1ea223182"));
             #endregion
 
             #region States
-            context.states.Add(new State(context.catalogs[0], 12));
-            context.states.Add(new State(context.catalogs[1], 3));
-            context.states.Add(new State(context.catalogs[2], 8));
-            context.states.Add(new State(context.catalogs[3], 2));
-            context.states.Add(new State(context.catalogs[4], 18));
+            context.states.Add(new State(context.catalogs["6d866448-b7ac-4b03-b5df-e09affd4ec08"], 12));
+            context.states.Add(new State(context.catalogs["2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"], 3));
+            context.states.Add(new State(context.catalogs["52c9b0ef-76a2-478c-b8b2-233a416f9f64"], 8));
+            context.states.Add(new State(context.catalogs["87c07f4d-d0ee-4202-97b8-b8da14a22eb7"], 2));
+            context.states.Add(new State(context.catalogs["47ddc515-2cbd-450a-83e9-0fd1ea223182"], 18));
             #endregion
 
             #region Events

@@ -9,7 +9,7 @@ namespace Data
     public class DataContext
     {
         public List<User> users = new List<User>();
-        public List<Catalog> catalogs = new List<Catalog>();
+        public Dictionary<string, Catalog> catalogs = new Dictionary<string, Catalog>();
         public List<Event> events = new List<Event>();
         public List<State> states = new List<State>();
     }

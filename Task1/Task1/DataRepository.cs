@@ -82,7 +82,7 @@ namespace Data
         #region Catalog
         private bool doesCatalogExist(string uuid)
         {
-            return context.catalogs.Exists(catalog => catalog.Uuid == uuid);
+            return context.catalogs.ContainsKey(uuid);
         }
 
 
@@ -93,17 +93,14 @@ namespace Data
                 throw new Exception("Catalog with this uuid already exists");
             }
 
-            context.catalogs.Add(catalog);
+            context.catalogs.Add(catalog.Uuid, catalog);
         }
 
         public Catalog GetCatalog(string uuid)
         {
-            foreach (var c in context.catalogs)
+            if(doesCatalogExist(uuid))
             {
-                if (c.Uuid == uuid)
-                {
-                    return c;
-                }
+                return context.catalogs[uuid];
             }
 
             throw new Exception("There is no such Catalog");
@@ -111,17 +108,20 @@ namespace Data
 
         public IEnumerable<Catalog> GetAllCatalogs()
         {
-            return context.catalogs;
+            return context.catalogs.Values.ToList();
         }
 
         public void UpdateCatalog(string uuid, Catalog catalog)
         {
-            Catalog temp = context.catalogs.First(c => c.Uuid == uuid);
+            if(!doesCatalogExist(uuid))
+            {
+                throw new Exception("There is no such Catalog");
+            }
 
-            temp.Name = catalog.Name;
-            temp.Genus = catalog.Genus;
-            temp.Price = catalog.Price;
-            temp.Uuid = catalog.Uuid;
+            context.catalogs[uuid].Name = catalog.Name;
+            context.catalogs[uuid].Genus = catalog.Genus;
+            context.catalogs[uuid].Price = catalog.Price;
+            context.catalogs[uuid].Uuid = catalog.Uuid;
         }
 
         public void DeleteCatalog(string uuid)
@@ -136,7 +136,7 @@ namespace Data
                 }
             }
 
-            context.catalogs.Remove(catalog);
+            context.catalogs.Remove(uuid);
         }
         #endregion
 

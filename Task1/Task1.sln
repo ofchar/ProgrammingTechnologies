@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1", "Task1\Task1.csproj", "{C3B7CDE2-8500-469A-AF1C-47C5BF1AC3A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1Tests", "Task1Tests\Task1Tests.csproj", "{6DE3A6D5-7A0E-468F-8BA8-ECABDB790B22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1DataTests", "Task1Tests\Task1DataTests.csproj", "{6DE3A6D5-7A0E-468F-8BA8-ECABDB790B22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1LogicTests", "Task1LogicTests\Task1LogicTests.csproj", "{797AAF40-5450-42E6-AE66-625126BA03BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C3B7CDE2-8500-469A-AF1C-47C5BF1AC3A3} = {C3B7CDE2-8500-469A-AF1C-47C5BF1AC3A3}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{6DE3A6D5-7A0E-468F-8BA8-ECABDB790B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DE3A6D5-7A0E-468F-8BA8-ECABDB790B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DE3A6D5-7A0E-468F-8BA8-ECABDB790B22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{797AAF40-5450-42E6-AE66-625126BA03BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{797AAF40-5450-42E6-AE66-625126BA03BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{797AAF40-5450-42E6-AE66-625126BA03BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{797AAF40-5450-42E6-AE66-625126BA03BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

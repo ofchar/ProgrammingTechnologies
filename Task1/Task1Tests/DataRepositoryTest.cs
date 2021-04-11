@@ -10,15 +10,26 @@ namespace Task1Tests
     [TestClass]
     public class DataRepositoryTest
     {
+        #region utils
+        private DataRepository PrepareRepository()
+        {
+            DataContext context = new DataContext();
+            DataRepository repository = new DataRepository(context);
+
+            IDataFill fill = new FillWithConstants();
+            fill.Fill(context);
+
+            return repository;
+        }
+        #endregion
+
+
+
         #region User
         [TestMethod]
         public void AddUser_NewEqualsAdded()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             string newUserUuid = Guid.NewGuid().ToString();
 
@@ -31,11 +42,7 @@ namespace Task1Tests
         [TestMethod]
         public void GetUserTest_CompareWithFillStatic()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             Assert.AreEqual("Lorembski", repository.GetUser("3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b").LastName);
         }
@@ -43,11 +50,7 @@ namespace Task1Tests
         [TestMethod]
         public void GetAllUsersTest_CompareWithFillStatic()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             List<User> expected = new List<User>();
             expected.Add(new User("Pukasz", "Lorembski", "3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b"));
@@ -58,7 +61,7 @@ namespace Task1Tests
 
             List<User> tmp = repository.GetAllUsers().ToList<User>();
 
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Assert.AreEqual(tmp[i].ToString(), expected[i].ToString());
             }
@@ -67,11 +70,7 @@ namespace Task1Tests
         [TestMethod]
         public void UpdateUserTest()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             User user = new User("Test", "Teest", "3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b");
 
@@ -80,13 +79,20 @@ namespace Task1Tests
             Assert.AreEqual(user.ToString(), repository.GetUser("3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b").ToString());
         }
 
+        [TestMethod()]
+        public void UpdateUserTest_NoUserToUpdate()
+        {
+            DataRepository repository = PrepareRepository();
+
+            User user = new User("name", "lastName", "uuid");
+
+            Assert.ThrowsException<InvalidOperationException>(() => repository.UpdateUser("abcd", user));
+        }
+
         [TestMethod]
         public void DeleteUserTest()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
+            DataRepository repository = PrepareRepository();
 
             string newUserUuid = Guid.NewGuid().ToString();
             User user = new User("Tonald", "Drump", newUserUuid);
@@ -103,10 +109,7 @@ namespace Task1Tests
         [TestMethod]
         public void DeleteUserTest_NoUserToDelete()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
+            DataRepository repository = PrepareRepository();
 
             Assert.ThrowsException<Exception>(() => repository.DeleteUser("0123456789"));
         }
@@ -118,11 +121,7 @@ namespace Task1Tests
         [TestMethod]
         public void AddCatalog_NewEqualsAdded()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             string newCatalogUuid = Guid.NewGuid().ToString();
 
@@ -135,11 +134,7 @@ namespace Task1Tests
         [TestMethod]
         public void GetCatalogTest_CompareWithFillStatic()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             Assert.AreEqual("Sansevieria", repository.GetCatalog("2133ae57-1fb3-4f4c-86f5-b1c90beea1a0").Genus);
         }
@@ -147,11 +142,7 @@ namespace Task1Tests
         [TestMethod]
         public void GetAllCatalogsTest_CompareWithFillStatic()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             List<Catalog> expected = new List<Catalog>();
             expected.Add(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"));
@@ -171,11 +162,7 @@ namespace Task1Tests
         [TestMethod]
         public void UpdateCatalogTest()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             Catalog catalog = new Catalog("Test", "Teest", 12, "87c07f4d-d0ee-4202-97b8-b8da14a22eb7");
 
@@ -185,12 +172,19 @@ namespace Task1Tests
         }
 
         [TestMethod]
+        public void UpdateCatalogTest_NoCatalogToUpdate()
+        {
+            DataRepository repository = PrepareRepository();
+
+            Catalog catalog = new Catalog("test", "genus", 12, "uuiiiiiid");
+
+            Assert.ThrowsException<InvalidOperationException>(() => repository.UpdateCatalog("1234567890", catalog));
+        }
+
+        [TestMethod]
         public void DeleteCatalogTest()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
+            DataRepository repository = PrepareRepository();
 
             string newCatalogUuid = Guid.NewGuid().ToString();
             Catalog catalog = new Catalog("Epipremnum aureum", "epipremnum", 100, newCatalogUuid);
@@ -207,10 +201,7 @@ namespace Task1Tests
         [TestMethod]
         public void DeleteCatalogTest_NoCatalogToDelete()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
+            DataRepository repository = PrepareRepository();
 
             Assert.ThrowsException<Exception>(() => repository.DeleteCatalog("0123456789"));
         }
@@ -221,92 +212,55 @@ namespace Task1Tests
         [TestMethod]
         public void AddState_NewEqualsAdded()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
+            DataRepository repository = PrepareRepository();
 
             Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5, 30);
+            State state = new State(catalog, 5);
 
             repository.AddState(state);
 
-            Assert.IsTrue(state.Equals(repository.GetState(0)));
+            Assert.IsTrue(state.Equals(repository.GetState(5)));
         }
 
         [TestMethod]
         public void GetStateTest_CompareWithFillStatic()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
+            DataRepository repository = PrepareRepository();
 
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
-
-            Assert.AreEqual(22.0, repository.GetState(1).Price);
-        }
-
-        [TestMethod]
-        public void GetAllStatesTest_CompareWithFillStatic()
-        {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-
-            repository.AddState(new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"), 2, 20));
-            repository.AddState(new State(new Catalog("Sansevieria trifasciata", "Sansevieria", 30, "2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"), 3, 30));
-
-
-            List<State> expected = new List<State>();
-            expected.Add(new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08"), 2, 20));
-            expected.Add(new State(new Catalog("Sansevieria trifasciata", "Sansevieria", 30, "2133ae57-1fb3-4f4c-86f5-b1c90beea1a0"), 3, 30));
-
-            List<State> tmp = repository.GetAllStates().ToList<State>();
-
-            for (int i = 0; i < 2; i++)
-            {
-                Assert.AreEqual(tmp[i].ToString(), expected[i].ToString());
-            }
+            Assert.AreEqual(3, repository.GetState(1).Amount);
         }
 
         [TestMethod]
         public void DeleteStateTest()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
+            DataRepository repository = PrepareRepository();
 
             Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5, 30);
+            State state = new State(catalog, 5);
 
             repository.AddState(state);
 
-            Assert.AreEqual(5, repository.GetState(0).Amount);
+            Assert.AreEqual(5, repository.GetState(5).Amount);
 
             repository.DeleteState(state);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => repository.GetState(0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => repository.GetState(5));
         }
 
         [TestMethod]
         public void DeleteStateTest_StateConnectedToEvent()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-            
-            DataRepository repository = new DataRepository(context, fill);
+            DataRepository repository = PrepareRepository();
 
             User user = new User("Testomir", "Testowy", Guid.NewGuid().ToString());
             Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5, 30);
-            Event e = new Event(user, state, DateTime.Now);
+            State state = new State(catalog, 5);
+            Event e = new BuyEvent(user, state, DateTime.Now);
 
             repository.AddState(state);
             repository.AddEvent(e);
 
-            Assert.AreEqual(4, repository.GetState(0).Amount);
+            Assert.AreEqual(5, repository.GetState(5).Amount);
 
             Assert.ThrowsException<Exception>(() => repository.DeleteState(state));
         }
@@ -317,29 +271,22 @@ namespace Task1Tests
         [TestMethod]
         public void AddEvent_NewEqualsAdded()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
+            DataRepository repository = PrepareRepository();
 
             User user = new User("Testomir", "Testowy", Guid.NewGuid().ToString());
             Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5, 30);
-            Event e = new Event(user, state, DateTime.Now);
+            State state = new State(catalog, 5);
+            Event e = new BuyEvent(user, state, DateTime.Now);
 
             repository.AddEvent(e);
 
-            Assert.IsTrue(e.Equals(repository.GetEvent(0)));
+            Assert.IsTrue(e.Equals(repository.GetEvent(5)));
         }
 
         [TestMethod]
         public void GetEventTest_CompareWithFillStatic()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-            repository.FillData();
+            DataRepository repository = PrepareRepository();
 
             Catalog catalog = new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, "6d866448-b7ac-4b03-b5df-e09affd4ec08");
 
@@ -347,52 +294,20 @@ namespace Task1Tests
         }
 
         [TestMethod]
-        public void GetAllEventsTest_CompareWithFillStatic()
-        {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
-
-            DataRepository repository = new DataRepository(context, fill);
-
-            State state = new State(new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString()), 5, 30);
-            Event e = new Event(new User("Testomir", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Today);
-
-            State state2 = new State(new Catalog("Zamioculcas zamiifolia", "Zamioculcas", 40, Guid.NewGuid().ToString()), 4, 60);
-            Event e2 = new Event(new User("Jan", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Today);
-
-            repository.AddEvent(e);
-            repository.AddEvent(e2);
-
-            List<Event> expected = new List<Event>();
-            expected.Add(e);
-            expected.Add(e2);
-
-            List<Event> tmp = repository.GetAllEvents().ToList<Event>();
-
-            for (int i = 0; i < 2; i++)
-            {
-                Assert.AreEqual(tmp[i].ToString(), expected[i].ToString());
-            }
-        }
-
-        [TestMethod]
         public void DeleteEventTest()
         {
-            DataContext context = new DataContext();
-            FillWithConstants fill = new FillWithConstants();
+            DataRepository repository = PrepareRepository();
 
-            DataRepository repository = new DataRepository(context, fill);
-
-            State state = new State(new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString()), 5, 30);
-            Event e = new Event(new User("Testomir", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Today);
+            State state = new State(new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString()), 5);
+            Event e = new BuyEvent(new User("Testomir", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Today);
 
             repository.AddEvent(e);
 
-            Assert.AreEqual(e.ToString(), repository.GetEvent(0).ToString());
+            Assert.AreEqual(e.ToString(), repository.GetEvent(5).ToString());
 
             repository.DeleteEvent(e);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => repository.GetEvent(0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => repository.GetEvent(5));
         }
         #endregion
     }

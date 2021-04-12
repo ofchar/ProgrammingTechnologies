@@ -1,6 +1,7 @@
 ﻿using System;
+using Data;
 
-namespace Data
+namespace Task1DataTests
 {
     public interface IDataFill
     {

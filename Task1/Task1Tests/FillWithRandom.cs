@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Fill
+namespace Task1DataTests
 {
     public class FillWithRandom : IDataFill
     {

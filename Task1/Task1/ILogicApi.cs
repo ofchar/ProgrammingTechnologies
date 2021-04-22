@@ -10,22 +10,22 @@ namespace Logic
     interface ILogicApi
     {
         #region Relations
-        List<Event> EventsForUser(string userUuid);
+        List<IEvent> EventsForUser(string userUuid);
         
-        List<Event> EventsForCatalog(string catalogUuid);
+        List<IEvent> EventsForCatalog(string catalogUuid);
 
-        State CurrentCatalogState(string catalogUuid);
+        IState CurrentCatalogState(string catalogUuid);
         #endregion
 
 
         #region Search
-        List<User> SearchUser(string query);
+        List<IUser> SearchUser(string query);
 
-        List<Catalog> SearchCatalog(string query);
+        List<ICatalog> SearchCatalog(string query);
 
-        List<State> SearchState(string query);
+        List<IState> SearchState(string query);
 
-        List<Event> SearchEvent(string query);
+        List<IEvent> SearchEvent(string query);
         #endregion
 
 
@@ -36,27 +36,27 @@ namespace Logic
         #endregion
 
 
-        #region User crud
+        #region IUser crud
         void CreateUser(string firstName, string lastName);
 
         void CreateUser(string firstName, string lastName, string uuid);
 
-        User GetUser(string uuid);
+        IUser GetUser(string uuid);
 
-        IEnumerable<User> GetAllUsers();
+        IEnumerable<IUser> GetAllUsers();
 
         void DeleteUser(string uuid);
         #endregion
 
 
-        #region Catalog crud
+        #region ICatalog crud
         void CreateCatalog(string name, string genus, int price);
         
         void CreateCatalog(string name, string genus, int price, string uuid);
 
-        Catalog GetCatalog(string uuid);
+        ICatalog GetCatalog(string uuid);
         
-        IEnumerable<Catalog> GetAllCatalogs();
+        IEnumerable<ICatalog> GetAllCatalogs();
 
         void DeleteCatalog(string uuid);
         #endregion

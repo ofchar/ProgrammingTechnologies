@@ -8,7 +8,7 @@ namespace Data
 {
     public class RestockEvent : Event
     {
-        public RestockEvent(User user, State state, DateTime timestamp)
+        public RestockEvent(IUser user, IState state, DateTime timestamp)
             : base(user, state, timestamp) { }
     }
 }

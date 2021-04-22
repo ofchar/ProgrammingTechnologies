@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public abstract class Event
+    public abstract class Event : IEvent
     {
-        public User User { get; set; }
+        public IUser User { get; set; }
 
-        public State State { get; set; }
+        public IState State { get; set; }
 
         public DateTime Timestamp { get; set; }
 
 
-        public Event(User user, State state, DateTime timestamp)
+        public Event(IUser user, IState state, DateTime timestamp)
         {
             User = user;
             State = state;

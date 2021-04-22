@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Data;
 
-namespace Data
+namespace Task1LogicTests
 {
-    public class User : IUser
+    internal class TestUser : IUser
     {
         public string FirstName { get; set; }
 
@@ -15,7 +14,7 @@ namespace Data
         public string Uuid { get; set; }
 
 
-        public User(string firstName, string lastName, string uuid)
+        public TestUser(string firstName, string lastName, string uuid)
         {
             FirstName = firstName;
             LastName = lastName;

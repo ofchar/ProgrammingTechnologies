@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class DataContext : DataContextApi
+    public interface IState
     {
+        ICatalog Catalog { get; set; }
+
+        int Amount { get; set; }
+
+        string ToString();
     }
 }

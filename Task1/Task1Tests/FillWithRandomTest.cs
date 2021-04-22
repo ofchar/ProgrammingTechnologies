@@ -27,16 +27,16 @@ namespace Task1DataTests
         {
             DataRepository repository = PrepareRepository();
 
-            List<User> users = (List<User>)repository.GetAllUsers();
+            List<IUser> users = (List<IUser>)repository.GetAllUsers();
             Assert.AreEqual(10, users.Count);
 
-            List<Catalog> catalogs = (List<Catalog>)repository.GetAllCatalogs();
+            List<ICatalog> catalogs = (List<ICatalog>)repository.GetAllCatalogs();
             Assert.AreEqual(10, catalogs.Count);
 
-            List<State> states = (List<State>)repository.GetAllStates();
+            List<IState> states = (List<IState>)repository.GetAllStates();
             Assert.AreEqual(0, states.Count);
 
-            List<Event> events = (List<Event>)repository.GetAllEvents();
+            List<IEvent> events = (List<IEvent>)repository.GetAllEvents();
             Assert.AreEqual(0, events.Count);
         }
     }

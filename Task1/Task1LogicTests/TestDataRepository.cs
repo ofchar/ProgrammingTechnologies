@@ -9,45 +9,50 @@ namespace Task1LogicTests
 {
     public class TestDataRepository : IDataApi
     {
-        private List<User> users;
-        private List<Catalog> catalogs;
-        private List<Event> events;
-        private List<State> states;
+        private List<IUser> users;
+        private List<ICatalog> catalogs;
+        private List<IEvent> events;
+        private List<IState> states;
 
         public TestDataRepository()
         {
-            users = new List<User>();
-            catalogs = new List<Catalog>();
-            events = new List<Event>();
-            states = new List<State>();
+            users = new List<IUser>();
+            catalogs = new List<ICatalog>();
+            events = new List<IEvent>();
+            states = new List<IState>();
         }
 
 
 
         #region User
-        public void AddUser(User user)
+        public void AddUser(string firstName, string lastName, string uuid)
         {
-            users.Add(user);
+            users.Add(new TestUser(firstName, lastName, uuid));
         }
 
-        public User GetUser(string uuid)
+        public void AddUser(string firstName, string lastName)
         {
-            return new User("FirstName", "LastName", uuid);
+            users.Add(new TestUser(firstName, lastName, Guid.NewGuid().ToString()));
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public IUser GetUser(string uuid)
+        {
+            return new TestUser("FirstName", "LastName", uuid);
+        }
+
+        public IEnumerable<IUser> GetAllUsers()
         {
             return users;
         }
 
-        public void UpdateUser(string uuid, User user)
+        public void UpdateUser(string uuid, string firstName, string lastName)
         {
             throw new NotImplementedException();
         }
 
         public void DeleteUser(string uuid)
         {
-            User temp = users.First(u => u.Uuid == uuid);
+            TestUser temp = (TestUser)users.First(u => u.Uuid == uuid);
 
             users.Remove(temp);
         }
@@ -55,29 +60,42 @@ namespace Task1LogicTests
 
 
         #region Catalog
-        public void AddCatalog(Catalog catalog)
+        public void AddCatalog(string name, string genus, double price, string uuid)
         {
+            TestCatalog catalog = new TestCatalog(name, genus, price, uuid);
+
             catalogs.Add(catalog);
+
+            states.Add(new TestState(catalog, 0));
         }
 
-        public Catalog GetCatalog(string uuid)
+        public void AddCatalog(string name, string genus, double price)
         {
-            return new Catalog("name", "genus", 15, uuid);
+            TestCatalog catalog = new TestCatalog(name, genus, price, Guid.NewGuid().ToString());
+
+            catalogs.Add(catalog);
+
+            states.Add(new TestState(catalog, 0));
         }
 
-        public IEnumerable<Catalog> GetAllCatalogs()
+        public ICatalog GetCatalog(string uuid)
+        {
+            return new TestCatalog("name", "genus", 15, uuid);
+        }
+
+        public IEnumerable<ICatalog> GetAllCatalogs()
         {
             return catalogs;
         }
 
-        public void UpdateCatalog(string uuid, Catalog catalog)
+        public void UpdateCatalog(string uuid, string name, string genus, double price)
         {
             throw new NotImplementedException();
         }
 
         public void DeleteCatalog(string uuid)
         {
-            Catalog catalog = catalogs.First(c => c.Uuid == uuid);
+            TestCatalog catalog = (TestCatalog)catalogs.First(c => c.Uuid == uuid);
 
             catalogs.Remove(catalog);
         }
@@ -85,27 +103,32 @@ namespace Task1LogicTests
 
 
         #region Event
-        public void AddEvent(Event e)
+        public void AddBuyEvent(IUser user, IState state, DateTime timestamp)
         {
-            events.Add(e);
+            events.Add(new TestBuyEvent(user, state, timestamp));
         }
 
-        public Event GetEvent(int position)
+        public void AddRestockEvent(IUser user, IState state, DateTime timestamp)
         {
-            User user = new User("name", "lastName", "niceUuid");
-
-            Catalog catalog = new Catalog("name", "genus", 2, "catalogsUuid");
-            State state = new State(catalog, 11);
-
-            return new BuyEvent(user, state, new DateTime(2021, 01, 01));
+            events.Add(new TestBuyEvent(user, state, timestamp));
         }
 
-        public IEnumerable<Event> GetAllEvents()
+        public IEvent GetEvent(int position)
+        {
+            TestUser user = new TestUser("name", "lastName", "niceUuid");
+
+            TestCatalog catalog = new TestCatalog("name", "genus", 2, "catalogsUuid");
+            TestState state = new TestState(catalog, 11);
+
+            return new TestBuyEvent(user, state, new DateTime(2021, 01, 01));
+        }
+
+        public IEnumerable<IEvent> GetAllEvents()
         {
             return events;
         }
 
-        public void DeleteEvent(Event e)
+        public void DeleteEvent(IEvent e)
         {
             throw new NotImplementedException();
         }
@@ -118,36 +141,36 @@ namespace Task1LogicTests
 
 
         #region State
-        public void AddState(State state)
+        public void AddState(ICatalog catalog, int amount)
         {
-            states.Add(state);
+            states.Add(new TestState(catalog, amount));
         }
 
-        public State GetState(int position)
+        public IState GetState(int position)
         {
-            Catalog catalog = new Catalog("name", "genus", 2, "catalogsUuid");
+            TestCatalog catalog = new TestCatalog("name", "genus", 2, "catalogsUuid");
 
-            return new State(catalog, 10);
+            return new TestState(catalog, 10);
         }
 
-        public State GetCatalogState(string catalogUuid)
+        public IState GetCatalogState(string catalogUuid)
         {
             return states.Last(state => state.Catalog.Uuid == catalogUuid);
         }
 
-        public IEnumerable<State> GetAllStates()
+        public IEnumerable<IState> GetAllStates()
         {
             return states;
         }
 
         public void UpdateState(string catalogUuid, int newAmount)
         {
-            State temp = states.FindLast(state => state.Catalog.Uuid == catalogUuid);
+            TestState temp = (TestState)states.FindLast(state => state.Catalog.Uuid == catalogUuid);
 
             temp.Amount = newAmount;
         }
 
-        public void DeleteState(State state)
+        public void DeleteState(IState state)
         {
             throw new NotImplementedException();
         }

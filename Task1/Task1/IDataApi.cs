@@ -9,56 +9,62 @@ namespace Data
     public interface IDataApi
     {
         #region User CRUD
-        void AddUser(User user);
+        void AddUser(string firstName, string lastName);
 
-        User GetUser(string uuid);
+        void AddUser(string firstName, string lastName, string uuid);
 
-        IEnumerable<User> GetAllUsers();
+        IUser GetUser(string uuid);
 
-        void UpdateUser(string uuid, User user);
+        IEnumerable<IUser> GetAllUsers();
+
+        void UpdateUser(string uuid, string firstName, string lastName);
 
         void DeleteUser(string uuid);
         #endregion
 
 
         #region Catalog CRUD
-        void AddCatalog(Catalog catalog);
+        void AddCatalog(string name, string genus, double price);
 
-        Catalog GetCatalog(string uuid);
+        void AddCatalog(string name, string genus, double price, string uuid);
 
-        IEnumerable<Catalog> GetAllCatalogs();
+        ICatalog GetCatalog(string uuid);
 
-        void UpdateCatalog(string uuid, Catalog catalog);
+        IEnumerable<ICatalog> GetAllCatalogs();
+
+        void UpdateCatalog(string uuid, string name, string genus, double price);
 
         void DeleteCatalog(string uuid);
         #endregion
 
 
         #region Event CR(U)D
-        void AddEvent(Event e);
+        void AddBuyEvent(IUser user, IState state, DateTime timestamp);
 
-        Event GetEvent(int position);
+        void AddRestockEvent(IUser user, IState state, DateTime timestamp);
 
-        IEnumerable<Event> GetAllEvents();
+        IEvent GetEvent(int position);
 
-        void DeleteEvent(Event e);
+        IEnumerable<IEvent> GetAllEvents();
+
+        void DeleteEvent(IEvent e);
 
         void DeleteEvent(int position);
         #endregion
 
 
         #region State CRUD
-        void AddState(State state);
+        void AddState(ICatalog catalog, int amount);
 
-        State GetState(int position);
+        IState GetState(int position);
 
-        State GetCatalogState(string catalogUuid);
+        IState GetCatalogState(string catalogUuid);
 
-        IEnumerable<State> GetAllStates();
+        IEnumerable<IState> GetAllStates();
 
         void UpdateState(string catalogUuid, int newAmount);
 
-        void DeleteState(State state);
+        void DeleteState(IState state);
         #endregion
 
     }

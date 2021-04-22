@@ -32,10 +32,9 @@ namespace Task1DataTests
 
             string newUserUuid = Guid.NewGuid().ToString();
 
-            User user = new User("Tonald", "Drump", newUserUuid);
-            repository.AddUser(user);
+            repository.AddUser("Tonald", "Drump", newUserUuid);
 
-            Assert.IsTrue(user.Equals(repository.GetUser(newUserUuid)));
+            Assert.AreEqual("Tonald", repository.GetUser(newUserUuid).FirstName);
         }
 
         [TestMethod]
@@ -58,7 +57,7 @@ namespace Task1DataTests
             expected.Add(new User("Lobert", "Rewandowski", "6c285443-37a0-4347-9e8b-717dd5dfb1e4"));
             expected.Add(new User("Barcin", "M¹k", "19a94215-4477-47c6-93fa-135563c45ee7"));
 
-            List<User> tmp = repository.GetAllUsers().ToList<User>();
+            List<IUser> tmp = repository.GetAllUsers().ToList<IUser>();
 
             for (int i = 0; i < 5; i++)
             {
@@ -73,7 +72,7 @@ namespace Task1DataTests
 
             User user = new User("Test", "Teest", "3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b");
 
-            repository.UpdateUser("3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b", user);
+            repository.UpdateUser("3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b", "Test", "Teest");
 
             Assert.AreEqual(user.ToString(), repository.GetUser("3beea0f3-3bcb-4dfc-a77e-6abe88aadb9b").ToString());
         }
@@ -83,9 +82,7 @@ namespace Task1DataTests
         {
             DataRepository repository = PrepareRepository();
 
-            User user = new User("name", "lastName", "uuid");
-
-            Assert.ThrowsException<InvalidOperationException>(() => repository.UpdateUser("abcd", user));
+            Assert.ThrowsException<InvalidOperationException>(() => repository.UpdateUser("abcd", "name", "lastName"));
         }
 
         [TestMethod]
@@ -94,9 +91,8 @@ namespace Task1DataTests
             DataRepository repository = PrepareRepository();
 
             string newUserUuid = Guid.NewGuid().ToString();
-            User user = new User("Tonald", "Drump", newUserUuid);
 
-            repository.AddUser(user);
+            repository.AddUser("Tonald", "Drump", newUserUuid);
 
             Assert.AreEqual("Tonald", repository.GetUser(newUserUuid).FirstName);
 
@@ -124,10 +120,10 @@ namespace Task1DataTests
 
             string newCatalogUuid = Guid.NewGuid().ToString();
 
-            Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, newCatalogUuid);
-            repository.AddCatalog(catalog);
+            ICatalog catalog = new Catalog("Aloe vera", "Aloe", 40, newCatalogUuid);
+            repository.AddCatalog("Aloe vera", "Aloe", 40, newCatalogUuid);
 
-            Assert.IsTrue(catalog.Equals(repository.GetCatalog(newCatalogUuid)));
+            Assert.AreEqual(catalog.ToString(), repository.GetCatalog(newCatalogUuid).ToString());
         }
 
         [TestMethod]
@@ -150,7 +146,7 @@ namespace Task1DataTests
             expected.Add(new Catalog("Monstera deliciosa", "Monstera", 200, "87c07f4d-d0ee-4202-97b8-b8da14a22eb7"));
             expected.Add(new Catalog("Monstera adansonii ", "Monstera", 150, "47ddc515-2cbd-450a-83e9-0fd1ea223182"));
 
-            List<Catalog> tmp = repository.GetAllCatalogs().ToList<Catalog>();
+            List<ICatalog> tmp = repository.GetAllCatalogs().ToList<ICatalog>();
 
             for (int i = 0; i < 5; i++)
             {
@@ -165,7 +161,7 @@ namespace Task1DataTests
 
             Catalog catalog = new Catalog("Test", "Teest", 12, "87c07f4d-d0ee-4202-97b8-b8da14a22eb7");
 
-            repository.UpdateCatalog("87c07f4d-d0ee-4202-97b8-b8da14a22eb7", catalog);
+            repository.UpdateCatalog("87c07f4d-d0ee-4202-97b8-b8da14a22eb7", "Test", "Teest", 12);
 
             Assert.AreEqual(catalog.ToString(), repository.GetCatalog("87c07f4d-d0ee-4202-97b8-b8da14a22eb7").ToString());
         }
@@ -175,26 +171,21 @@ namespace Task1DataTests
         {
             DataRepository repository = PrepareRepository();
 
-            Catalog catalog = new Catalog("test", "genus", 12, "uuiiiiiid");
-
-            Assert.ThrowsException<Exception>(() => repository.UpdateCatalog("1234567890", catalog));
+            Assert.ThrowsException<Exception>(() => repository.UpdateCatalog("1234567890", "test", "genus", 12));
         }
 
         [TestMethod]
-        public void DeleteCatalogTest()
+        public void DeleteCatalogTest_CatalogConnectedToState()
         {
             DataRepository repository = PrepareRepository();
 
             string newCatalogUuid = Guid.NewGuid().ToString();
-            Catalog catalog = new Catalog("Epipremnum aureum", "epipremnum", 100, newCatalogUuid);
 
-            repository.AddCatalog(catalog);
+            repository.AddCatalog("Epipremnum aureum", "epipremnum", 100, newCatalogUuid);
 
             Assert.AreEqual(100, repository.GetCatalog(newCatalogUuid).Price);
 
-            repository.DeleteCatalog(newCatalogUuid);
-
-            Assert.ThrowsException<Exception>(() => repository.GetCatalog(newCatalogUuid));
+            Assert.ThrowsException<Exception>(() => repository.DeleteCatalog(newCatalogUuid));
         }
 
         [TestMethod]
@@ -209,19 +200,6 @@ namespace Task1DataTests
 
         #region State
         [TestMethod]
-        public void AddState_NewEqualsAdded()
-        {
-            DataRepository repository = PrepareRepository();
-
-            Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5);
-
-            repository.AddState(state);
-
-            Assert.IsTrue(state.Equals(repository.GetState(5)));
-        }
-
-        [TestMethod]
         public void GetStateTest_CompareWithFillStatic()
         {
             DataRepository repository = PrepareRepository();
@@ -234,12 +212,11 @@ namespace Task1DataTests
         {
             DataRepository repository = PrepareRepository();
 
-            Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5);
+            repository.AddCatalog("Aloe vera", "Aloe", 40, "asdd");
 
-            repository.AddState(state);
+            Assert.AreEqual(0, repository.GetState(5).Amount);
 
-            Assert.AreEqual(5, repository.GetState(5).Amount);
+            IState state = repository.GetCatalogState("asdd");
 
             repository.DeleteState(state);
 
@@ -251,17 +228,15 @@ namespace Task1DataTests
         {
             DataRepository repository = PrepareRepository();
 
-            User user = new User("Testomir", "Testowy", Guid.NewGuid().ToString());
-            Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5);
-            Event e = new BuyEvent(user, state, DateTime.Now);
+            IUser user = new User("Testomir", "Testowy", Guid.NewGuid().ToString());
+            ICatalog catalog = new Catalog("Aloe vera", "Aloe", 40, "as");
 
-            repository.AddState(state);
-            repository.AddEvent(e);
+            repository.AddState(catalog, 5);
+            repository.AddBuyEvent(user, repository.GetCatalogState("as"), DateTime.Now);
 
             Assert.AreEqual(5, repository.GetState(5).Amount);
 
-            Assert.ThrowsException<Exception>(() => repository.DeleteState(state));
+            Assert.ThrowsException<Exception>(() => repository.DeleteState(repository.GetCatalogState("as")));
         }
         #endregion
 
@@ -273,13 +248,13 @@ namespace Task1DataTests
             DataRepository repository = PrepareRepository();
 
             User user = new User("Testomir", "Testowy", Guid.NewGuid().ToString());
-            Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString());
-            State state = new State(catalog, 5);
-            Event e = new BuyEvent(user, state, DateTime.Now);
+            Catalog catalog = new Catalog("Aloe vera", "Aloe", 40, "asd");
 
-            repository.AddEvent(e);
+            repository.AddState(catalog, 5);
 
-            Assert.IsTrue(e.Equals(repository.GetEvent(5)));
+            repository.AddBuyEvent(user, repository.GetCatalogState("asd"), DateTime.Now); ;
+
+            Assert.AreEqual(user, repository.GetEvent(5).User);
         }
 
         [TestMethod]
@@ -298,13 +273,12 @@ namespace Task1DataTests
             DataRepository repository = PrepareRepository();
 
             State state = new State(new Catalog("Aloe vera", "Aloe", 40, Guid.NewGuid().ToString()), 5);
-            Event e = new BuyEvent(new User("Testomir", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Today);
 
-            repository.AddEvent(e);
+            repository.AddRestockEvent(new User("Testomir", "Testowy", Guid.NewGuid().ToString()), state, DateTime.Now);
 
-            Assert.AreEqual(e.ToString(), repository.GetEvent(5).ToString());
+            Assert.AreEqual("Testomir", repository.GetEvent(5).User.FirstName);
 
-            repository.DeleteEvent(e);
+            repository.DeleteEvent(repository.GetEvent(5));
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => repository.GetEvent(5));
         }

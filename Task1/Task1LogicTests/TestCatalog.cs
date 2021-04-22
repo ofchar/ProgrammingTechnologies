@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Data;
 
-namespace Data
+namespace Task1LogicTests
 {
-    public class Catalog : ICatalog
+    internal class TestCatalog : ICatalog
     {
         public string Name { get; set; }
 
@@ -17,7 +16,7 @@ namespace Data
         public string Uuid { get; set; }
 
 
-        public Catalog(string name, string genus, double price, string uuid)
+        public TestCatalog(string name, string genus, double price, string uuid)
         {
             Name = name;
             Genus = genus;
@@ -26,8 +25,8 @@ namespace Data
         }
 
 
-        public override string ToString() 
-        { 
+        public override string ToString()
+        {
             return Name + " " + Genus + " " + Price + " " + Uuid;
         }
     }

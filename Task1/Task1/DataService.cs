@@ -27,11 +27,11 @@ namespace Logic
 
 
         #region Relations
-        public List<Event> EventsForUser(string userUuid)
+        public List<IEvent> EventsForUser(string userUuid)
         {
-            List<Event> result = new List<Event>();
+            List<IEvent> result = new List<IEvent>();
 
-            foreach (Event e in repository.GetAllEvents())
+            foreach (IEvent e in repository.GetAllEvents())
             {
                 if (e.User.Uuid == userUuid)
                 {
@@ -42,11 +42,11 @@ namespace Logic
             return result;
         }
 
-        public List<Event> EventsForCatalog(string catalogUuid)
+        public List<IEvent> EventsForCatalog(string catalogUuid)
         {
-            List<Event> result = new List<Event>();
+            List<IEvent> result = new List<IEvent>();
 
-            foreach (Event e in repository.GetAllEvents())
+            foreach (IEvent e in repository.GetAllEvents())
             {
                 if (e.State.Catalog.Uuid == catalogUuid)
                 {
@@ -57,7 +57,7 @@ namespace Logic
             return result;
         }
 
-        public State CurrentCatalogState(string catalogUuid)
+        public IState CurrentCatalogState(string catalogUuid)
         {
             return repository.GetCatalogState(catalogUuid);
         }
@@ -65,56 +65,56 @@ namespace Logic
 
 
         #region Search
-        public List<User> SearchUser(string query)
+        public List<IUser> SearchUser(string query)
         {
-            List<User> results = new List<User>();
+            List<IUser> results = new List<IUser>();
 
-            foreach (User user in repository.GetAllUsers())
+            foreach (IUser IUser in repository.GetAllUsers())
             {
-                if (user.ToString().Contains(query))
+                if (IUser.ToString().Contains(query))
                 {
-                    results.Add(user);
+                    results.Add(IUser);
                 }
             }
 
             return results;
         }
 
-        public List<Catalog> SearchCatalog(string query)
+        public List<ICatalog> SearchCatalog(string query)
         {
-            List<Catalog> results = new List<Catalog>();
+            List<ICatalog> results = new List<ICatalog>();
 
-            foreach (Catalog catalog in repository.GetAllCatalogs())
+            foreach (ICatalog ICatalog in repository.GetAllCatalogs())
             {
-                if (catalog.ToString().Contains(query))
+                if (ICatalog.ToString().Contains(query))
                 {
-                    results.Add(catalog);
+                    results.Add(ICatalog);
                 }
             }
 
             return results;
         }
 
-        public List<State> SearchState(string query)
+        public List<IState> SearchState(string query)
         {
-            List<State> results = new List<State>();
+            List<IState> results = new List<IState>();
 
-            foreach (State state in repository.GetAllStates())
+            foreach (IState IState in repository.GetAllStates())
             {
-                if (state.ToString().Contains(query))
+                if (IState.ToString().Contains(query))
                 {
-                    results.Add(state);
+                    results.Add(IState);
                 }
             }
 
             return results;
         }
 
-        public List<Event> SearchEvent(string query)
+        public List<IEvent> SearchEvent(string query)
         {
-            List<Event> results = new List<Event>();
+            List<IEvent> results = new List<IEvent>();
 
-            foreach (Event e in repository.GetAllEvents())
+            foreach (IEvent e in repository.GetAllEvents())
             {
                 if (e.ToString().Contains(query))
                 {
@@ -130,57 +130,51 @@ namespace Logic
         #region Actions
         public void Buy(string userUuid, string catalogUuid, DateTime purchaseDate, int amount)
         {
-            User user = repository.GetUser(userUuid);
+            IUser IUser = repository.GetUser(userUuid);
 
-            State state = repository.GetCatalogState(catalogUuid);
+            IState IState = repository.GetCatalogState(catalogUuid);
 
-            if (state.Amount < amount)
+            if (IState.Amount < amount)
             {
                 throw new Exception("There is not enough stock for this operation");
             }
 
-            repository.AddEvent(new BuyEvent(user, state, purchaseDate));
+            repository.AddBuyEvent(IUser, IState, purchaseDate);
 
-            int newAmount = state.Amount - amount;
+            int newAmount = IState.Amount - amount;
             repository.UpdateState(catalogUuid, newAmount);
         }
 
         public void Restock(string supplierUuid, string catalogUuid, DateTime restockDate, int amount)
         {
-            User user = repository.GetUser(supplierUuid);
-            State state = repository.GetCatalogState(catalogUuid);
+            IUser IUser = repository.GetUser(supplierUuid);
+            IState IState = repository.GetCatalogState(catalogUuid);
 
-            int newAmount = state.Amount + amount;
+            int newAmount = IState.Amount + amount;
 
-            repository.AddEvent(new RestockEvent(user, state, restockDate));
+            repository.AddRestockEvent(IUser, IState, restockDate);
             repository.UpdateState(catalogUuid, newAmount);
         }
         #endregion
 
 
-        #region User crud
+        #region IUser crud
         public void CreateUser(string firstName, string lastName)
         {
-            string generatedUuid = generateUuid();
-
-            User createdUser = new User(firstName, lastName, generatedUuid);
-
-            repository.AddUser(createdUser);
+            repository.AddUser(firstName, lastName);
         }
 
         public void CreateUser(string firstName, string lastName, string uuid)
         {
-            User createdUser = new User(firstName, lastName, uuid);
-
-            repository.AddUser(createdUser);
+            repository.AddUser(firstName, lastName, uuid);
         }
 
-        public User GetUser(string uuid)
+        public IUser GetUser(string uuid)
         {
             return repository.GetUser(uuid);
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public IEnumerable<IUser> GetAllUsers()
         {
             return repository.GetAllUsers();
         }
@@ -192,40 +186,23 @@ namespace Logic
         #endregion
 
 
-        #region Catalog crud
-        private void CreateStateForCatalog(Catalog catalog)
-        {
-            State state = new State(catalog, 0);
-
-            repository.AddState(state);
-        }
-
+        #region ICatalog crud
         public void CreateCatalog(string name, string genus, int price)
         {
-            string generatedUuid = generateUuid();
-
-            Catalog createdCatalog = new Catalog(name, genus, price, generatedUuid);
-
-            repository.AddCatalog(createdCatalog);
-
-            CreateStateForCatalog(createdCatalog);
+            repository.AddCatalog(name, genus, price);
         }
 
         public void CreateCatalog(string name, string genus, int price, string uuid)
         {
-            Catalog createdCatalog = new Catalog(name, genus, price, uuid);
-
-            repository.AddCatalog(createdCatalog);
-
-            CreateStateForCatalog(createdCatalog);
+            repository.AddCatalog(name, genus, price, uuid);
         }
 
-        public Catalog GetCatalog(string uuid)
+        public ICatalog GetCatalog(string uuid)
         {
             return repository.GetCatalog(uuid);
         }
 
-        public IEnumerable<Catalog> GetAllCatalogs()
+        public IEnumerable<ICatalog> GetAllCatalogs()
         {
             return repository.GetAllCatalogs();
         }

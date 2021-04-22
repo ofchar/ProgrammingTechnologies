@@ -45,16 +45,21 @@
   <ItemGroup>
     <Compile Include="BuyEvent.cs" />
     <Compile Include="Catalog.cs" />
+    <Compile Include="ICatalog.cs" />
     <Compile Include="IDataApi.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DataRepository.cs" />
     <Compile Include="DataService.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="IDataContext.cs" />
+    <Compile Include="IEvent.cs" />
     <Compile Include="ILogicApi.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="IState.cs" />
+    <Compile Include="IUser.cs" />
     <Compile Include="RestockEvent.cs" />
     <Compile Include="State.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

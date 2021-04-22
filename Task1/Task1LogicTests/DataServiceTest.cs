@@ -42,7 +42,7 @@ namespace Task1LogicTests
             fillCatalogs(service);
             fillEvents(service);
 
-            List<Event> events = service.EventsForUser("userUuid1");
+            List<IEvent> events = service.EventsForUser("userUuid1");
 
             Assert.AreEqual(2, events.Count);
 
@@ -58,7 +58,7 @@ namespace Task1LogicTests
             fillCatalogs(service);
             fillEvents(service);
 
-            List<Event> events = service.EventsForCatalog("catalogUuid2");
+            List<IEvent> events = service.EventsForCatalog("catalogUuid2");
 
             Assert.AreEqual(2, events.Count);
 
@@ -73,7 +73,7 @@ namespace Task1LogicTests
 
             fillCatalogs(service);
 
-            State state = service.CurrentCatalogState("catalogUuid3");
+            IState state = service.CurrentCatalogState("catalogUuid3");
 
             Assert.AreEqual("catalogUuid3", state.Catalog.Uuid);
         }
@@ -91,7 +91,7 @@ namespace Task1LogicTests
 
             service.Restock("SomeUuid", productUuid, DateTime.Now, 9);
 
-            State state = service.CurrentCatalogState(productUuid);
+            IState state = service.CurrentCatalogState(productUuid);
             Assert.AreEqual(9, state.Amount);
         }
 
@@ -107,7 +107,7 @@ namespace Task1LogicTests
 
             service.Buy("SomeUuid", productUuid, DateTime.Now, 1);
 
-            List<Event> events = service.SearchEvent(productUuid);
+            List<IEvent> events = service.SearchEvent(productUuid);
 
             Assert.AreEqual(8, events[0].State.Amount);
         }
@@ -134,7 +134,7 @@ namespace Task1LogicTests
             service.CreateUser("Monika", "Jaworowicz");
             service.CreateUser("Marcel", "Dyndala");
 
-            List<User> users = service.SearchUser("Monika");
+            List<IUser> users = service.SearchUser("Monika");
 
             Assert.AreEqual(1, users.Count);
             Assert.AreEqual("Monika", users[0].FirstName);
@@ -148,7 +148,7 @@ namespace Task1LogicTests
             service.CreateCatalog("roslina1", "gatunek1", 10);
             service.CreateCatalog("flower2", "genus2", 33);
 
-            List<Catalog> catalogs = service.SearchCatalog("genus2");
+            List<ICatalog> catalogs = service.SearchCatalog("genus2");
 
             Assert.AreEqual(1, catalogs.Count);
             Assert.AreEqual("flower2", catalogs[0].Name);
@@ -162,7 +162,7 @@ namespace Task1LogicTests
             service.CreateCatalog("name1", "genus1", 10, "uuid1");
             service.CreateCatalog("name2", "genus2", 20, "uuid2");
 
-            List<State> states = service.SearchState("genus2");
+            List<IState> states = service.SearchState("genus2");
 
             Assert.AreEqual(1, states.Count);
             Assert.AreEqual(0, states[0].Amount);
@@ -178,7 +178,7 @@ namespace Task1LogicTests
 
             service.Restock("SomeUuid", productUuid, DateTime.Now, 9);
 
-            List<Event> events = service.SearchEvent("flower1");
+            List<IEvent> events = service.SearchEvent("flower1");
 
             Assert.AreEqual(1, events.Count);
             Assert.AreEqual(9, events[0].State.Amount);
@@ -199,13 +199,13 @@ namespace Task1LogicTests
             service.CreateUser("Adam", "Tester", "someGoodUuid1");
             service.CreateUser("Adam", "Tester");
 
-            List<User> users = (List<User>)service.GetAllUsers();
+            List<IUser> users = (List<IUser>)service.GetAllUsers();
             Assert.AreEqual(2, users.Count);
 
 
             service.DeleteUser("someGoodUuid1");
 
-            users = (List<User>)service.GetAllUsers();
+            users = (List<IUser>)service.GetAllUsers();
             Assert.AreEqual(1, users.Count);
         }
 
@@ -221,13 +221,13 @@ namespace Task1LogicTests
             service.CreateCatalog("flower", "flowerrs", 50, "niceUuid");
             service.CreateCatalog("otherFlower", "otherFlowerrs", 100);
 
-            List<Catalog> catalogs = (List<Catalog>)service.GetAllCatalogs();
+            List<ICatalog> catalogs = (List<ICatalog>)service.GetAllCatalogs();
             Assert.AreEqual(2, catalogs.Count);
 
 
             service.DeleteCatalog("niceUuid");
 
-            catalogs = (List<Catalog>)service.GetAllCatalogs();
+            catalogs = (List<ICatalog>)service.GetAllCatalogs();
             Assert.AreEqual(1, catalogs.Count);
         }
         #endregion

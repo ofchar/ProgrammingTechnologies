@@ -8,7 +8,7 @@ namespace Data
 {
     public class BuyEvent : Event
     {
-        public BuyEvent(User user, State state, DateTime timestamp)
+        public BuyEvent(IUser user, IState state, DateTime timestamp)
             : base(user, state, timestamp) { }
     }
 }

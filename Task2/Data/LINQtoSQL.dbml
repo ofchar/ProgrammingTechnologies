@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ptdb" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-2JETCTM;Initial Catalog=ptdb;Integrated Security=True" SettingsObjectName="Data.Properties.Settings" SettingsPropertyName="ptdbConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.user" Member="users">
+    <Type Name="user">
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="user_first_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="user_last_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="user_event" Member="event" ThisKey="user_id" OtherKey="user_id" Type="event" />
+    </Type>
+  </Table>
+  <Table Name="dbo.catalog" Member="catalogs">
+    <Type Name="catalog">
+      <Column Name="catalog_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="catalog_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="catalog_genus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="catalog_price" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="catalog_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="catalog_event" Member="event" ThisKey="catalog_id" OtherKey="catalog_id" Type="event" />
+    </Type>
+  </Table>
+  <Table Name="dbo.event" Member="event">
+    <Type Name="event">
+      <Column Name="event_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="event_timestamp" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="event_is_stocking" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="event_amount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="catalog_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="catalog_event" Member="catalog" ThisKey="catalog_id" OtherKey="catalog_id" Type="catalog" IsForeignKey="true" />
+      <Association Name="user_event" Member="user" ThisKey="user_id" OtherKey="user_id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

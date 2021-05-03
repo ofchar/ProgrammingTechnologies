@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using Data;
 using System.Data.SqlClient;
-using Res;
 
 
 namespace DataTest
@@ -11,12 +10,12 @@ namespace DataTest
     [TestClass]
     public class DataTest
     {
-        SQLString sqlString = new SQLString();
+        private string sqlString = "Data Source = DESKTOP-2JETCTM; Initial Catalog = ptdb; Integrated Security = True";
 
         [TestMethod]
         public void AddFlowerToDatabase()
         {
-            using (DataClasses1DataContext database = new DataClasses1DataContext(sqlString.GetString()))
+            using (DataClasses1DataContext database = new DataClasses1DataContext(sqlString))
             {
                 catalog catalog = new catalog();
                 catalog.catalog_id = 2;

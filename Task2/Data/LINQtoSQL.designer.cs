@@ -96,7 +96,7 @@ namespace Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.user")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.users")]
 	public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -234,7 +234,7 @@ namespace Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.catalog")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.catalogs")]
 	public partial class catalog : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -420,7 +420,7 @@ namespace Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.event")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.events")]
 	public partial class @event : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		

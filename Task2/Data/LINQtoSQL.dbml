@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ptdb" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-2JETCTM;Initial Catalog=ptdb;Integrated Security=True" SettingsObjectName="Data.Properties.Settings" SettingsPropertyName="ptdbConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.user" Member="users">
+  <Table Name="dbo.users" Member="users">
     <Type Name="user">
       <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="user_first_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
@@ -8,7 +8,7 @@
       <Association Name="user_event" Member="event" ThisKey="user_id" OtherKey="user_id" Type="event" />
     </Type>
   </Table>
-  <Table Name="dbo.catalog" Member="catalogs">
+  <Table Name="dbo.catalogs" Member="catalogs">
     <Type Name="catalog">
       <Column Name="catalog_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="catalog_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
@@ -18,7 +18,7 @@
       <Association Name="catalog_event" Member="event" ThisKey="catalog_id" OtherKey="catalog_id" Type="event" />
     </Type>
   </Table>
-  <Table Name="dbo.event" Member="event">
+  <Table Name="dbo.events" Member="event">
     <Type Name="event">
       <Column Name="event_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="event_timestamp" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />

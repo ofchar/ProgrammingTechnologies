@@ -73,7 +73,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<user> GetUserByLastName(string lastName)
+        static public user GetUserByLastName(string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -83,11 +83,11 @@ namespace Services
                 {
                     if (user.user_last_name.Equals(lastName))
                     {
-                        result.Add(user);
+                        return user;
                     }
                 }
 
-                return result;
+                return null;
             }
         }
 

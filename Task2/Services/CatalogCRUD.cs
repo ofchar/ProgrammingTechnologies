@@ -11,12 +11,11 @@ namespace Services
         {
         }
 
-        static public bool addCatalog(int id, string name, string genus, int price, int quantity)
+        static public bool AddCatalog(int id, string name, string genus, int price, int quantity)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-
-                if (GetDonut(id) == null && quantity >= 0)
+                if (GetCatalog(id) == null && quantity >= 0)
                 {
                     catalog newCatalog = new catalog
                     {
@@ -33,6 +32,7 @@ namespace Services
                     return true;
                 }
             }
+
             return false;   
         }
 

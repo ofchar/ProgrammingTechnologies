@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Services.DTOModels;
 
 namespace Services
 {
@@ -10,6 +11,25 @@ namespace Services
         public CatalogCRUD()
         {
         }
+
+        private static CatalogDTO Map(catalog catalog)
+        {
+            if(catalog == null)
+            {
+                return null;
+            }
+
+            return new CatalogDTO
+            {
+                Id = catalog.catalog_id,
+                Name = catalog.catalog_name,
+                Genus = catalog.catalog_genus,
+                Quantity = (int)catalog.catalog_quantity,
+                Price = (int)catalog.catalog_price
+            };
+        }
+
+
 
         static public bool AddCatalog(int id, string name, string genus, int price, int quantity)
         {
@@ -36,106 +56,96 @@ namespace Services
             return false;   
         }
 
-        static public catalog GetCatalog(int id)
+        static public CatalogDTO GetCatalog(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                foreach (catalog catalog in context.catalogs.ToList())
-                {
-                    if (catalog.catalog_id == id)
-                    {
-                        return catalog;
-                    }
-                }
+                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
 
-                return null;
+                return Map(catalog);
             }
         }
 
-        static public IEnumerable<catalog> GetAllCatalogs()
+        static public IEnumerable<CatalogDTO> GetAllCatalogs()
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                var result = context.catalogs.ToList();
+                var catalogs = context.catalogs.ToList();
+                var result = new List<CatalogDTO>();
+
+                catalogs.ForEach(delegate (catalog catalog)
+                {
+                    result.Add(Map(catalog));
+                });
 
                 return result;
             }
         }
 
-        static public catalog GetCatalogByName(string name)
+        static public CatalogDTO GetCatalogByName(string name)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                foreach (catalog catalog in context.catalogs.ToList())
-                {
-                    if (catalog.catalog_name == name)
-                    {
-                        return catalog;
-                    }
-                }
-                return null;
+                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_name == name);
+
+                return Map(catalog);
             }
         }
 
-        static public IEnumerable<catalog> GetCatalogsByGenus(string genus)
+        static public IEnumerable<CatalogDTO> GetCatalogsByGenus(string genus)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                List<catalog> result = new List<catalog>();
+                var catalogs = from catalog in context.catalogs
+                               where catalog.catalog_genus == genus
+                               select Map(catalog);
 
-                foreach (catalog catalog in context.catalogs)
-                {
-                    if (catalog.catalog_genus.Equals(genus))
-                    {
-                        result.Add(catalog);
-                    }
-                }
-                return result;
+                return catalogs.ToList();
             }
         }
 
-        static public List<Dictionary<string, string>> GetCatalogsInfo()
-        {
-            List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
+        //static public List<Dictionary<string, string>> GetCatalogsInfo()
+        //{
+        //    List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
 
-            List<catalog> tempCatalogs = GetAllCatalogs().ToList();
+        //    List<catalog> tempCatalogs = GetAllCatalogs().ToList();
 
-            foreach (catalog catalog in tempCatalogs)
-            {
-                Dictionary<string, string> temp = new Dictionary<string, string>();
+        //    foreach (catalog catalog in tempCatalogs)
+        //    {
+        //        Dictionary<string, string> temp = new Dictionary<string, string>();
 
-                temp.Add("id", catalog.catalog_id.ToString());
-                temp.Add("name", catalog.catalog_name);
-                temp.Add("genus", catalog.catalog_genus);
-                temp.Add("price", catalog.catalog_price.ToString());
-                temp.Add("quantity", catalog.catalog_quantity.ToString());
+        //        temp.Add("id", catalog.catalog_id.ToString());
+        //        temp.Add("name", catalog.catalog_name);
+        //        temp.Add("genus", catalog.catalog_genus);
+        //        temp.Add("price", catalog.catalog_price.ToString());
+        //        temp.Add("quantity", catalog.catalog_quantity.ToString());
 
-                returnList.Add(temp);
-            }
+        //        returnList.Add(temp);
+        //    }
 
-            return returnList;
-        }
+        //    return returnList;
+        //}
 
-        static public Dictionary<string, string> GetCatalogInfo(int catalog_id)
-        {
-            Dictionary<string, string> temp = new Dictionary<string, string>();
+        //static public Dictionary<string, string> GetCatalogInfo(int catalog_id)
+        //{
+        //    Dictionary<string, string> temp = new Dictionary<string, string>();
 
-            catalog cat = GetCatalog(catalog_id);
+        //    catalog cat = GetCatalog(catalog_id);
 
-            temp.Add("id", cat.catalog_id.ToString());
-            temp.Add("name", cat.catalog_name);
-            temp.Add("genus", cat.catalog_genus);
-            temp.Add("price", cat.catalog_price.ToString());
-            temp.Add("quantity", cat.catalog_quantity.ToString());
+        //    temp.Add("id", cat.catalog_id.ToString());
+        //    temp.Add("name", cat.catalog_name);
+        //    temp.Add("genus", cat.catalog_genus);
+        //    temp.Add("price", cat.catalog_price.ToString());
+        //    temp.Add("quantity", cat.catalog_quantity.ToString());
 
-            return temp;
-        }
+        //    return temp;
+        //}
 
         static public bool UpdateName(int id, string name)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                catalog catalog = context.catalogs.SingleOrDefault(cat => cat.catalog_id == id);
+                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
 
                 catalog.catalog_name = name;
 
@@ -149,7 +159,7 @@ namespace Services
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                catalog catalog = context.catalogs.SingleOrDefault(cat => cat.catalog_id == id);
+                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
 
                 catalog.catalog_genus = genus;
 
@@ -163,7 +173,7 @@ namespace Services
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                catalog catalog = context.catalogs.SingleOrDefault(cat => cat.catalog_id == id);
+                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
 
                 catalog.catalog_price = price;
 
@@ -177,7 +187,7 @@ namespace Services
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                catalog catalog = context.catalogs.SingleOrDefault(cat => cat.catalog_id == id);
+                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
 
                 catalog.catalog_quantity = quantity;
 
@@ -191,7 +201,7 @@ namespace Services
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                catalog catalog = context.catalogs.SingleOrDefault(cat => cat.catalog_id == id);
+                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
 
                 context.catalogs.DeleteOnSubmit(catalog);
 

@@ -1,4 +1,5 @@
 ﻿using Data;
+using Services.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,27 @@ namespace Services
         { 
         }
 
-        static public bool AddEvent(int id, DateTime timestamp, bool isStocking, int amount, int catalog_id, int user_id) 
+        private static EventDTO Map(@event e)
+        {
+            if (e == null)
+            {
+                return null;
+            }
+
+            return new EventDTO
+            {
+                Id = e.event_id,
+                Timestamp = e.event_timestamp,
+                IsStocking= e.event_is_stocking,
+                Amount = e.event_amount,
+                Catalog_id= e.catalog_id,
+                User_id = e.user_id
+            };
+        }
+
+
+
+        static public bool AddEvent(int id, DateTime timestamp, bool isStocking, int amount, int catalog_id, int user_id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -23,7 +44,7 @@ namespace Services
                     event_timestamp = timestamp,
                     event_is_stocking = isStocking,
                     event_amount = amount,
-                    catalog_id  = catalog_id,
+                    catalog_id = catalog_id,
                     user_id = user_id
                 };
 
@@ -34,151 +55,105 @@ namespace Services
             }
         }
 
-        static public @event GetEvent(int id)
+        static public EventDTO GetEvent(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                foreach (@event myevent in context.@event.ToList())
-                {
-                    if (myevent.event_id == id)
-                    {
-                        return myevent;
-                    }
-                }
-                return null;
+                @event e = context.@event.FirstOrDefault(ev => ev.event_id == id);
+
+                return Map(e);
             }
         }
 
-        static public IEnumerable<@event> GetAllEvents()
+        static public IEnumerable<EventDTO> GetAllEvents()
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                var result = context.@event.ToList();
+                var es = from e in context.@event
+                         select Map(e);
 
-                return result;
+                return es.ToList();
             }
         }
 
-        static public IEnumerable<@event> GetEventsByTime(DateTime timestamp)
-        {
-            using (var context = new DataClasses1DataContext())
-            {
-                List<@event> events = new List<@event>();
-
-                foreach (@event eveent in context.@event.ToList())
-                {
-                    if (eveent.event_timestamp == timestamp)
-                    {
-                        events.Add(eveent);
-                    }
-                }
-
-                return events;
-            }
-        }
-
-        static public IEnumerable<@event> GetEventsByType(bool type)
+        static public IEnumerable<EventDTO> GetEventsByType(bool type)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                List<@event> result = new List<@event>();
+                var es = from e in context.@event
+                         where e.event_is_stocking == type
+                         select Map(e);
 
-                foreach (@event myevent in context.@event)
-                {
-                    if (myevent.event_is_stocking.Equals(type))
-                    {
-                        result.Add(myevent);
-                    }
-                }
-
-                return result;
+                return es.ToList();
             }
         }
 
-        static public IEnumerable<@event> GetEventsByCatalog(int catalog_id)
+        static public IEnumerable<EventDTO> GetEventsByCatalog(int catalog_id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                List<@event> result = new List<@event>();
+                var es = from e in context.@event
+                         where e.catalog_id == catalog_id
+                         select Map(e);
 
-                foreach (@event myevent in context.@event)
-                {
-                    if (myevent.catalog_id.Equals(catalog_id))
-                    {
-                        result.Add(myevent);
-                    }
-                }
-
-                return result;
+                return es.ToList();
             }
         }
 
-        static public IEnumerable<@event> GetEventsByUser(int user_id)
+        static public IEnumerable<EventDTO> GetEventsByUser(int user_id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                List<@event> result = new List<@event>();
+                var es = from e in context.@event
+                         where e.user_id == user_id
+                         select Map(e);
 
-                foreach (@event myevent in context.@event)
-                {
-                    if (myevent.user_id.Equals(user_id))
-                    {
-                        result.Add(myevent);
-                    }
-                }
-
-                return result;
+                return es.ToList();
             }
         }
 
-        static public IEnumerable<@event> GetEventsByUserNames(string firstName, string lastName)
+        static public IEnumerable<EventDTO> GetEventsByUserNames(string firstName, string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                user user = UserCRUD.GetUserByNames(firstName, lastName);
+                UserDTO user = UserCRUD.GetUserByNames(firstName, lastName);
 
-                List<@event> events = new List<@event>();
+                var es = from e in context.@event
+                         where e.user_id == user.Id
+                         select Map(e);
 
-                foreach (@event ev in context.@event.ToList())
-                {
-                    if (ev.user_id == user.user_id)
-                    {
-                        events.Add(ev);
-                    }
-                }
-
-                return events;
+                return es.ToList();
             }
         }
 
-        static public List<Dictionary<string, string>> GetEventsInfoforUser(string firstName, string lastName)
-        {
-            List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
+        //static public List<Dictionary<string, string>> GetEventsInfoforUser(string firstName, string lastName)
+        //{
+        //    List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
 
-            List<@event> tempE = GetEventsByUserNames(firstName, lastName).ToList();
+        //    List<@event> tempE = GetEventsByUserNames(firstName, lastName).ToList();
 
-            foreach (@event e in tempE)
-            {
-                Dictionary<string, string> temp = new Dictionary<string, string>();
+        //    foreach (@event e in tempE)
+        //    {
+        //        Dictionary<string, string> temp = new Dictionary<string, string>();
 
-                temp.Add("id", e.event_id.ToString());
-                temp.Add("timestamp", e.event_timestamp.ToString());
-                temp.Add("is_stocking", e.event_is_stocking.ToString());
-                temp.Add("amount", e.event_amount.ToString());
-                temp.Add("catalog_id", e.catalog_id.ToString());
-                temp.Add("user_id", e.user_id.ToString());
+        //        temp.Add("id", e.event_id.ToString());
+        //        temp.Add("timestamp", e.event_timestamp.ToString());
+        //        temp.Add("is_stocking", e.event_is_stocking.ToString());
+        //        temp.Add("amount", e.event_amount.ToString());
+        //        temp.Add("catalog_id", e.catalog_id.ToString());
+        //        temp.Add("user_id", e.user_id.ToString());
 
-                returnList.Add(temp);
-            }
+        //        returnList.Add(temp);
+        //    }
 
-            return returnList;
-        }
+        //    return returnList;
+        //}
 
         static public bool DeleteEvent(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                @event myEvent = context.@event.SingleOrDefault(@event => @event.event_id == id);
+                @event myEvent = context.@event.FirstOrDefault(@event => @event.event_id == id);
 
                 context.@event.DeleteOnSubmit(myEvent);
 
@@ -188,31 +163,17 @@ namespace Services
             }
         }
 
-        static public void DeleteEventsForUser(int user_id)
-        {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                IEnumerable<@event> events = context.@event.Where(e => e.user_id == user_id);
-
-                foreach (@event e in events)
-                {
-                    context.@event.DeleteOnSubmit(e);
-                    context.SubmitChanges();
-                }
-            }
-        }
-
         static public bool BuyCatalog(int event_id, int catalog_id, int user_id, int amount)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
                 if (CatalogCRUD.GetCatalog(catalog_id) != null)
                 {
-                    if (CatalogCRUD.GetCatalog(catalog_id).catalog_quantity > amount)
+                    if (CatalogCRUD.GetCatalog(catalog_id).Quantity > amount)
                     {
                         AddEvent(event_id, DateTime.Today, false, amount, catalog_id, user_id);
 
-                        CatalogCRUD.UpdateQuantity(catalog_id, (int)(CatalogCRUD.GetCatalog(catalog_id).catalog_quantity - amount));
+                        CatalogCRUD.UpdateQuantity(catalog_id, (int)(CatalogCRUD.GetCatalog(catalog_id).Quantity - amount));
 
                         return true;
                     }
@@ -228,11 +189,11 @@ namespace Services
             {
                 if (CatalogCRUD.GetCatalog(catalog_id) != null)
                 {
-                    if (CatalogCRUD.GetCatalog(catalog_id).catalog_quantity > amount)
+                    if (CatalogCRUD.GetCatalog(catalog_id).Quantity > amount)
                     {
                         AddEvent(event_id, DateTime.Today, true, amount, catalog_id, user_id);
 
-                        CatalogCRUD.UpdateQuantity(catalog_id, (int)(CatalogCRUD.GetCatalog(catalog_id).catalog_quantity + amount));
+                        CatalogCRUD.UpdateQuantity(catalog_id, (int)(CatalogCRUD.GetCatalog(catalog_id).Quantity + amount));
 
                         return true;
                     }

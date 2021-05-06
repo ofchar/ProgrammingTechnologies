@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOModels\CatalogDTO.cs" />
+    <Compile Include="DTOModels\EventDTO.cs" />
+    <Compile Include="DTOModels\UserDTO.cs" />
     <Compile Include="EventCRUD.cs" />
     <Compile Include="UserCRUD.cs" />
     <Compile Include="CatalogCRUD.cs" />
@@ -53,5 +56,6 @@
       <Name>Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

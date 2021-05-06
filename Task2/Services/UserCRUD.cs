@@ -1,4 +1,5 @@
 ﻿using Data;
+using Services.DTOModels;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,23 @@ namespace Services
         public UserCRUD()
         {
         }
+
+        private static UserDTO Map(user user)
+        {
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserDTO
+            {
+                Id = user.user_id,
+                FirstName = user.user_first_name,
+                LastName = user.user_last_name
+            };
+        }
+
+
 
         static public bool AddUser(int id, string firstName, string lastName)
         {
@@ -29,122 +47,103 @@ namespace Services
             }
         }
 
-        static public user GetUser(int id)
+        static public UserDTO GetUser(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                foreach (user user in context.users.ToList())
-                {
-                    if (user.user_id == id)
-                    {
-                        return user;
-                    }
-                }
+                user user = context.users.FirstOrDefault(u => u.user_id == id);
 
-                return null;
+                return Map(user);
             }
         }
 
-        static public IEnumerable<user> GetAllUsers()
+        static public IEnumerable<UserDTO> GetAllUsers()
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                var result = context.users.ToList();
+                var users = context.users.ToList();
+                var result = new List<UserDTO>();
+
+                users.ForEach(delegate (user user)
+                {
+                    result.Add(Map(user));
+                });
 
                 return result;
             }
         }
 
-        static public IEnumerable<user> GetUsersByFirstName(string firstName)
+        static public IEnumerable<UserDTO> GetUsersByFirstName(string firstName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                List<user> result = new List<user>();
+                var users = from user in context.users
+                               where user.user_first_name == firstName
+                               select Map(user);
 
-                foreach (user user in context.users)
-                {
-                    if (user.user_first_name.Equals(firstName))
-                    {
-                        result.Add(user);
-                    }
-                }
-
-                return result;
+                return users.ToList();
             }
         }
 
-        static public user GetUserByLastName(string lastName)
+        static public UserDTO GetUserByLastName(string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                List<user> result = new List<user>();
+                user user = context.users.FirstOrDefault(u => u.user_last_name == lastName);
 
-                foreach (user user in context.users)
-                {
-                    if (user.user_last_name.Equals(lastName))
-                    {
-                        return user;
-                    }
-                }
-
-                return null;
+                return Map(user);
             }
         }
 
-        static public user GetUserByNames(string firstName, string lastName)
+        static public UserDTO GetUserByNames(string firstName, string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                foreach (user user in context.users.ToList())
-                {
-                    if (user.user_first_name == firstName && user.user_last_name == lastName)
-                    {
-                        return user;
-                    }
-                }
+                user user = context.users.FirstOrDefault(u => 
+                    u.user_first_name == firstName && u.user_last_name == lastName);
 
-                return null;
+                return Map(user);
             }
         }
 
-        static public List<Dictionary<string, string>> GetUsersInfo()
-        {
-            List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
+        //static public List<Dictionary<string, string>> GetUsersInfo()
+        //{
+        //    List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
 
-            List<user> tempUsers = GetAllUsers().ToList();
+        //    List<user> tempUsers = GetAllUsers().ToList();
 
-            foreach (user user in tempUsers)
-            {
-                Dictionary<string, string> temp = new Dictionary<string, string>();
+        //    foreach (user user in tempUsers)
+        //    {
+        //        Dictionary<string, string> temp = new Dictionary<string, string>();
 
-                temp.Add("firstName", user.user_first_name);
-                temp.Add("id", user.user_id.ToString());
-                temp.Add("l_name", user.user_last_name);
+        //        temp.Add("firstName", user.user_first_name);
+        //        temp.Add("id", user.user_id.ToString());
+        //        temp.Add("l_name", user.user_last_name);
 
-                returnList.Add(temp);
-            }
+        //        returnList.Add(temp);
+        //    }
 
-            return returnList;
-        }
+        //    return returnList;
+        //}
 
-        static public Dictionary<string, string> GetUserInfo(int user_id)
-        {
-            Dictionary<string, string> temp = new Dictionary<string, string>();
+        //static public Dictionary<string, string> GetUserInfo(int user_id)
+        //{
+        //    Dictionary<string, string> temp = new Dictionary<string, string>();
 
-            user user = GetUser(user_id);
+        //    user user = GetUser(user_id);
 
-            temp.Add("id", user.user_id.ToString());
-            temp.Add("firstName", user.user_first_name);
-            temp.Add("lastName", user.user_last_name);
+        //    temp.Add("id", user.user_id.ToString());
+        //    temp.Add("firstName", user.user_first_name);
+        //    temp.Add("lastName", user.user_last_name);
 
-            return temp;
-        }
+        //    return temp;
+        //}
 
         static public bool UpdateFirstName(int id, string firstName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                user user = context.users.SingleOrDefault(usr => usr.user_id == id);
+                user user = context.users.FirstOrDefault(usr => usr.user_id == id);
 
                 user.user_first_name = firstName;
 
@@ -158,7 +157,7 @@ namespace Services
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                user user = context.users.SingleOrDefault(usr => usr.user_id == id);
+                user user = context.users.FirstOrDefault(usr => usr.user_id == id);
 
                 user.user_last_name = lastName;
 
@@ -172,7 +171,7 @@ namespace Services
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                user user = context.users.SingleOrDefault(usr => usr.user_id == id);
+                user user = context.users.FirstOrDefault(usr => usr.user_id == id);
 
                 context.users.DeleteOnSubmit(user);
 

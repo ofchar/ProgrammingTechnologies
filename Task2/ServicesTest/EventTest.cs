@@ -1,6 +1,7 @@
 ﻿using Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Services;
+using Services.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace ServicesTest
             PrepareDatabase();
 
             EventCRUD.AddEvent(17, DateTime.Now, false, 72, 4, 3);
-            Assert.AreEqual(EventCRUD.GetEvent(17).event_amount, 72);
+            Assert.AreEqual(EventCRUD.GetEvent(17).Amount, 72);
             EventCRUD.DeleteEvent(17);
 
             UnprepareDatabase();
@@ -66,9 +67,9 @@ namespace ServicesTest
             PrepareDatabase();
             EventCRUD.AddEvent(1, DateTime.Now, false, 10, 1, 1);
 
-            IEnumerable<@event> events = EventCRUD.GetAllEvents();
+            IEnumerable<EventDTO> events = EventCRUD.GetAllEvents();
             Assert.AreEqual(events.Count(), 1);
-            Assert.AreEqual(events.ElementAt(0).event_id, 1);
+            Assert.AreEqual(events.ElementAt(0).Id, 1);
 
             EventCRUD.DeleteEvent(1);
             UnprepareDatabase();
@@ -82,9 +83,9 @@ namespace ServicesTest
             EventCRUD.AddEvent(2, DateTime.Now, true, 15, 2, 1);
             EventCRUD.AddEvent(3, DateTime.Now, false, 20, 3, 2);
 
-            IEnumerable<@event> events = EventCRUD.GetEventsByUser(1);
+            IEnumerable<EventDTO> events = EventCRUD.GetEventsByUser(1);
             Assert.AreEqual(events.Count(), 2);
-            Assert.AreEqual(events.ElementAt(0).event_id, 1);
+            Assert.AreEqual(events.ElementAt(0).Id, 1);
 
             EventCRUD.DeleteEvent(1);
             EventCRUD.DeleteEvent(2);
@@ -100,9 +101,9 @@ namespace ServicesTest
             EventCRUD.AddEvent(2, DateTime.Now, true, 15, 2, 1);
             EventCRUD.AddEvent(3, DateTime.Now, false, 20, 2, 2);
 
-            IEnumerable<@event> events = EventCRUD.GetEventsByCatalog(2);
+            IEnumerable<EventDTO> events = EventCRUD.GetEventsByCatalog(2);
             Assert.AreEqual(events.Count(), 2);
-            Assert.AreEqual(events.ElementAt(0).event_id, 2);
+            Assert.AreEqual(events.ElementAt(0).Id, 2);
 
             EventCRUD.DeleteEvent(1);
             EventCRUD.DeleteEvent(2);
@@ -118,21 +119,14 @@ namespace ServicesTest
             EventCRUD.AddEvent(2, DateTime.Now, true, 15, 2, 1);
             EventCRUD.AddEvent(3, DateTime.Now, true, 20, 3, 2);
 
-            IEnumerable<@event> events = EventCRUD.GetEventsByType(true);
+            IEnumerable<EventDTO> events = EventCRUD.GetEventsByType(true);
             Assert.AreEqual(events.Count(), 2);
-            Assert.AreEqual(events.ElementAt(0).event_id, 2);
+            Assert.AreEqual(events.ElementAt(0).Id, 2);
 
             EventCRUD.DeleteEvent(1);
             EventCRUD.DeleteEvent(2);
             EventCRUD.DeleteEvent(3);
             UnprepareDatabase();
-        }
-
-        [TestMethod]
-        public void GetEventsByTimeTest()
-        {
-            IEnumerable<@event> events = EventCRUD.GetEventsByTime(DateTime.Now);
-            Assert.AreEqual(events.Count(), 0);
         }
 
         [TestMethod]
@@ -143,9 +137,9 @@ namespace ServicesTest
             EventCRUD.AddEvent(2, DateTime.Now, true, 15, 2, 1);
             EventCRUD.AddEvent(3, DateTime.Now, false, 20, 3, 2);
 
-            IEnumerable<@event> events = EventCRUD.GetEventsByUserNames("Bleksandra", "Augajska");
+            IEnumerable<EventDTO> events = EventCRUD.GetEventsByUserNames("Bleksandra", "Augajska");
             Assert.AreEqual(events.Count(), 2);
-            Assert.AreEqual(events.ElementAt(0).event_id, 1);
+            Assert.AreEqual(events.ElementAt(0).Id, 1);
 
             EventCRUD.DeleteEvent(1);
             EventCRUD.DeleteEvent(2);

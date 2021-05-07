@@ -3,16 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Services.DTOModels;
+using Data.API;
 
 namespace Services
 {
     public class CatalogCRUD
     {
+        private IDataApi repository;
+
         public CatalogCRUD()
         {
+            repository = new Repository();
         }
 
-        private CatalogDTO Map(catalog catalog)
+        private CatalogDTO Map(ICatalog catalog)
         {
             if(catalog == null)
             {
@@ -21,11 +25,11 @@ namespace Services
 
             return new CatalogDTO
             {
-                Id = catalog.catalog_id,
-                Name = catalog.catalog_name,
-                Genus = catalog.catalog_genus,
-                Quantity = (int)catalog.catalog_quantity,
-                Price = (int)catalog.catalog_price
+                Id = catalog.Id,
+                Name = catalog.Name,
+                Genus = catalog.Genus,
+                Quantity = catalog.Quantity,
+                Price = catalog.Price
             };
         }
 
@@ -33,203 +37,69 @@ namespace Services
 
         public bool AddCatalog(int id, string name, string genus, int price, int quantity)
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                if (GetCatalog(id) == null && quantity >= 0)
-                {
-                    catalog newCatalog = new catalog
-                    {
-                        catalog_id = id,
-                        catalog_name = name,
-                        catalog_genus = genus,
-                        catalog_price = price,
-                        catalog_quantity = quantity,
+            repository.AddCatalog(id, name, genus, quantity, price);
 
-                    };
-                    context.catalogs.InsertOnSubmit(newCatalog);
-                    context.SubmitChanges();
-
-                    return true;
-                }
-            }
-
-            return false;   
+            return true;
         }
 
         public bool AddCatalog(string name, string genus, int price)
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                catalog newCatalog = new catalog
-                {
-                    catalog_id = context.catalogs.Count() + 1,
-                    catalog_name = name,
-                    catalog_genus = genus,
-                    catalog_price = price,
-                    catalog_quantity = 0,
-                };
-                context.catalogs.InsertOnSubmit(newCatalog);
-                context.SubmitChanges();
+            repository.AddCatalog(name, genus, 0, price);
 
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public CatalogDTO GetCatalog(int id)
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
-
-                return Map(catalog);
-            }
+            return Map(repository.GetCatalog(id));
         }
 
         public IEnumerable<CatalogDTO> GetAllCatalogs()
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
+            var catalogs = repository.GetAllCatalogs();
+            var result = new List<CatalogDTO>();
+
+            foreach (var catalog in catalogs)
             {
-                var catalogs = context.catalogs.ToList();
-                var result = new List<CatalogDTO>();
-
-                catalogs.ForEach(delegate (catalog catalog)
-                {
-                    result.Add(Map(catalog));
-                });
-
-                return result;
+                result.Add(Map(catalog));
             }
+
+            return result;
         }
-
-        public CatalogDTO GetCatalogByName(string name)
-        {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_name == name);
-
-                return Map(catalog);
-            }
-        }
-
-        public IEnumerable<CatalogDTO> GetCatalogsByGenus(string genus)
-        {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                var catalogs = from catalog in context.catalogs
-                               where catalog.catalog_genus == genus
-                               select Map(catalog);
-
-                return catalogs.ToList();
-            }
-        }
-
-        //static public List<Dictionary<string, string>> GetCatalogsInfo()
-        //{
-        //    List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
-
-        //    List<catalog> tempCatalogs = GetAllCatalogs().ToList();
-
-        //    foreach (catalog catalog in tempCatalogs)
-        //    {
-        //        Dictionary<string, string> temp = new Dictionary<string, string>();
-
-        //        temp.Add("id", catalog.catalog_id.ToString());
-        //        temp.Add("name", catalog.catalog_name);
-        //        temp.Add("genus", catalog.catalog_genus);
-        //        temp.Add("price", catalog.catalog_price.ToString());
-        //        temp.Add("quantity", catalog.catalog_quantity.ToString());
-
-        //        returnList.Add(temp);
-        //    }
-
-        //    return returnList;
-        //}
-
-        //static public Dictionary<string, string> GetCatalogInfo(int catalog_id)
-        //{
-        //    Dictionary<string, string> temp = new Dictionary<string, string>();
-
-        //    catalog cat = GetCatalog(catalog_id);
-
-        //    temp.Add("id", cat.catalog_id.ToString());
-        //    temp.Add("name", cat.catalog_name);
-        //    temp.Add("genus", cat.catalog_genus);
-        //    temp.Add("price", cat.catalog_price.ToString());
-        //    temp.Add("quantity", cat.catalog_quantity.ToString());
-
-        //    return temp;
-        //}
 
         public bool UpdateName(int id, string name)
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
+            repository.UpdateCatalogName(id, name);
 
-                catalog.catalog_name = name;
-
-                context.SubmitChanges();
-
-                return true;
-            }
+            return true;
         }
 
         public bool UpdateGenus(int id, string genus)
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
+            repository.UpdateCatalogGenus(id, genus);
 
-                catalog.catalog_genus = genus;
-
-                context.SubmitChanges();
-
-                return true;
-            }
+            return true;
         }
 
         public bool UpdatePrice(int id, int price)
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
+            repository.UpdateCatalogPrice(id, price);
 
-                catalog.catalog_price = price;
-
-                context.SubmitChanges();
-
-                return true;
-            }
+            return true;
         }
 
         public bool UpdateQuantity(int id, int quantity)
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
+            repository.UpdateCatalogQuantity(id, quantity);
 
-                catalog.catalog_quantity = quantity;
-
-                context.SubmitChanges();
-
-                return true;
-            }
+            return true;
         }
 
         public bool DeleteCatalog(int id)
         {
-            using (DataClasses1DataContext context = new DataClasses1DataContext())
-            {
-                catalog catalog = context.catalogs.FirstOrDefault(cat => cat.catalog_id == id);
+            repository.DeleteCatalog(id);
 
-                context.catalogs.DeleteOnSubmit(catalog);
-
-                context.SubmitChanges();
-
-                return true;
-            }
+            return true;
         }
     }
 }

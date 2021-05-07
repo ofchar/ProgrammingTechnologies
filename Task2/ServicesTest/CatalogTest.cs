@@ -29,29 +29,8 @@ namespace ServicesTest
             catalogService.AddCatalog(420, "Friendship is magic", "magic", 123, 321);
 
             Assert.AreEqual(420, catalogService.GetCatalog(420).Id);
-            Assert.AreEqual(321, catalogService.GetCatalogByName("Friendship is magic").Quantity);
 
             catalogService.DeleteCatalog(420);
-        }
-
-        [TestMethod]
-        public void GetCatalogsTest()
-        {
-            CatalogCRUD catalogService = new CatalogCRUD();
-
-            catalogService.AddCatalog(2136, "Rainbow Dash", "Friendship", 68, 68);
-            catalogService.AddCatalog(2137, "Fluttershy", "Friendship", 69, 69);
-            catalogService.AddCatalog(2138, "Apple Jack", "Friendship", 70, 70);
-
-            IEnumerable<CatalogDTO> catalogs = catalogService.GetCatalogsByGenus("Friendship");
-            Assert.AreEqual(catalogs.Count(), 3);
-            Assert.AreEqual(catalogs.ElementAt(0).Name, "Rainbow Dash");
-            Assert.AreEqual(catalogs.ElementAt(1).Id, 2137);
-            Assert.AreEqual(catalogs.ElementAt(2).Price, 70);
-
-            catalogService.DeleteCatalog(2136);
-            catalogService.DeleteCatalog(2137);
-            catalogService.DeleteCatalog(2138);
         }
 
         [TestMethod]

@@ -28,8 +28,6 @@ namespace ServicesTest
             userService.AddUser(88, "Chloe", "Price");
 
             Assert.AreEqual(userService.GetUser(88).FirstName, "Chloe");
-            Assert.AreEqual(userService.GetUserByLastName("Price").Id, (88));
-            Assert.AreEqual(userService.GetUserByNames("Chloe", "Price").Id, 88);
 
             userService.DeleteUser(88);
         }
@@ -45,7 +43,7 @@ namespace ServicesTest
             Assert.AreEqual(userService.GetUser(11).LastName, "Caulfield");
 
             Assert.IsTrue(userService.UpdateFirstName(11, "Timothy"));
-            Assert.AreEqual(userService.GetUserByLastName("Caulfield").FirstName, "Timothy");
+            Assert.AreEqual(userService.GetUser(11).FirstName, "Timothy");
 
             userService.DeleteUser(11);
         }
@@ -59,11 +57,9 @@ namespace ServicesTest
             userService.AddUser(19, "Kaciej", "Mopa");
             userService.AddUser(22, "Wartłomiej", "Bubicki");
 
-            IEnumerable<UserDTO> users = userService.GetUsersByFirstName("Wartłomiej");
+            IEnumerable<UserDTO> users = userService.GetAllUsers();
 
-            Assert.AreEqual(users.Count(), 2);
-            Assert.AreEqual(users.ElementAt(0).LastName, "Błodarski");
-            Assert.AreEqual(users.ElementAt(1).Id, 22);
+            Assert.AreEqual(users.Count(), 3);
 
             userService.DeleteUser(16);
             userService.DeleteUser(19);

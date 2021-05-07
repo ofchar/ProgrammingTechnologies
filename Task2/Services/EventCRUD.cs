@@ -4,14 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
     public class EventCRUD
     {
+        private UserCRUD _UserService;
+
         public EventCRUD()
-        { 
+        {
+            _UserService = new UserCRUD();
         }
 
         private static EventDTO Map(@event e)
@@ -34,7 +36,7 @@ namespace Services
 
 
 
-        static public bool AddEvent(int id, DateTime timestamp, bool isStocking, int amount, int catalog_id, int user_id)
+        public bool AddEvent(int id, DateTime timestamp, bool isStocking, int amount, int catalog_id, int user_id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -55,7 +57,7 @@ namespace Services
             }
         }
 
-        static public EventDTO GetEvent(int id)
+        public EventDTO GetEvent(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -65,7 +67,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<EventDTO> GetAllEvents()
+        public IEnumerable<EventDTO> GetAllEvents()
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -76,7 +78,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<EventDTO> GetEventsByType(bool type)
+        public IEnumerable<EventDTO> GetEventsByType(bool type)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -88,7 +90,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<EventDTO> GetEventsByCatalog(int catalog_id)
+        public IEnumerable<EventDTO> GetEventsByCatalog(int catalog_id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -100,7 +102,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<EventDTO> GetEventsByUser(int user_id)
+        public IEnumerable<EventDTO> GetEventsByUser(int user_id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -112,11 +114,11 @@ namespace Services
             }
         }
 
-        static public IEnumerable<EventDTO> GetEventsByUserNames(string firstName, string lastName)
+        public IEnumerable<EventDTO> GetEventsByUserNames(string firstName, string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                UserDTO user = UserCRUD.GetUserByNames(firstName, lastName);
+                UserDTO user = _UserService.GetUserByNames(firstName, lastName);
 
                 var es = from e in context.@event
                          where e.user_id == user.Id
@@ -149,7 +151,7 @@ namespace Services
         //    return returnList;
         //}
 
-        static public bool DeleteEvent(int id)
+        public bool DeleteEvent(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -163,17 +165,20 @@ namespace Services
             }
         }
 
-        static public bool BuyCatalog(int event_id, int catalog_id, int user_id, int amount)
+        public bool BuyCatalog(int catalog_id, int user_id, int amount)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                if (CatalogCRUD.GetCatalog(catalog_id) != null)
-                {
-                    if (CatalogCRUD.GetCatalog(catalog_id).Quantity > amount)
-                    {
-                        AddEvent(event_id, DateTime.Today, false, amount, catalog_id, user_id);
+                CatalogCRUD catalogService = new CatalogCRUD();
 
-                        CatalogCRUD.UpdateQuantity(catalog_id, (int)(CatalogCRUD.GetCatalog(catalog_id).Quantity - amount));
+                if (catalogService.GetCatalog(catalog_id) != null)
+                {
+                    if (catalogService.GetCatalog(catalog_id).Quantity > amount)
+                    {
+                        int eId = context.@event.Count() + 1;
+                        AddEvent(eId, DateTime.Today, false, amount, catalog_id, user_id);
+
+                        catalogService.UpdateQuantity(catalog_id, (int)(catalogService.GetCatalog(catalog_id).Quantity - amount));
 
                         return true;
                     }
@@ -183,20 +188,20 @@ namespace Services
             return false;
         }
 
-        static public bool RestockCatalog(int event_id, int catalog_id, int user_id, int amount)
+        public bool RestockCatalog(int catalog_id, int user_id, int amount)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
-                if (CatalogCRUD.GetCatalog(catalog_id) != null)
+                CatalogCRUD catalogService = new CatalogCRUD();
+
+                if (catalogService.GetCatalog(catalog_id) != null)
                 {
-                    if (CatalogCRUD.GetCatalog(catalog_id).Quantity > amount)
-                    {
-                        AddEvent(event_id, DateTime.Today, true, amount, catalog_id, user_id);
+                    int eId = context.@event.Count() + 1;
+                    AddEvent(eId, DateTime.Today, true, amount, catalog_id, user_id);
 
-                        CatalogCRUD.UpdateQuantity(catalog_id, (int)(CatalogCRUD.GetCatalog(catalog_id).Quantity + amount));
+                    catalogService.UpdateQuantity(catalog_id, (int)(catalogService.GetCatalog(catalog_id).Quantity + amount));
 
-                        return true;
-                    }
+                    return true;
                 }
             }
 

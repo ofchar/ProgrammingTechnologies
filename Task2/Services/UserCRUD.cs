@@ -29,7 +29,7 @@ namespace Services
 
 
 
-        static public bool AddUser(int id, string firstName, string lastName)
+        public bool AddUser(int id, string firstName, string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -39,7 +39,7 @@ namespace Services
                     user_first_name = firstName,
                     user_last_name = lastName
                 };
-                
+
                 context.users.InsertOnSubmit(newUser);
                 context.SubmitChanges();
 
@@ -47,7 +47,25 @@ namespace Services
             }
         }
 
-        static public UserDTO GetUser(int id)
+        public bool AddUser(string firstName, string lastName)
+        {
+            using (DataClasses1DataContext context = new DataClasses1DataContext())
+            {
+                user newUser = new user
+                {
+                    user_id = context.users.Count() + 1,
+                    user_first_name = firstName,
+                    user_last_name = lastName
+                };
+
+                context.users.InsertOnSubmit(newUser);
+                context.SubmitChanges();
+
+                return true;
+            }
+        }
+
+        public UserDTO GetUser(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -57,7 +75,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<UserDTO> GetAllUsers()
+        public IEnumerable<UserDTO> GetAllUsers()
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -73,7 +91,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<UserDTO> GetUsersByFirstName(string firstName)
+        public IEnumerable<UserDTO> GetUsersByFirstName(string firstName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -85,7 +103,7 @@ namespace Services
             }
         }
 
-        static public UserDTO GetUserByLastName(string lastName)
+        public UserDTO GetUserByLastName(string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -95,7 +113,7 @@ namespace Services
             }
         }
 
-        static public UserDTO GetUserByNames(string firstName, string lastName)
+        public UserDTO GetUserByNames(string firstName, string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -139,7 +157,7 @@ namespace Services
         //    return temp;
         //}
 
-        static public bool UpdateFirstName(int id, string firstName)
+        public bool UpdateFirstName(int id, string firstName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -153,7 +171,7 @@ namespace Services
             }
         }
 
-        static public bool UpdateLastName(int id, string lastName)
+        public bool UpdateLastName(int id, string lastName)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -167,7 +185,7 @@ namespace Services
             }
         }
 
-        static public bool DeleteUser(int id)
+        public bool DeleteUser(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {

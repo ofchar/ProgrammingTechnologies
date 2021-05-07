@@ -12,7 +12,7 @@ namespace Services
         {
         }
 
-        private static CatalogDTO Map(catalog catalog)
+        private CatalogDTO Map(catalog catalog)
         {
             if(catalog == null)
             {
@@ -31,7 +31,7 @@ namespace Services
 
 
 
-        static public bool AddCatalog(int id, string name, string genus, int price, int quantity)
+        public bool AddCatalog(int id, string name, string genus, int price, int quantity)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -56,7 +56,28 @@ namespace Services
             return false;   
         }
 
-        static public CatalogDTO GetCatalog(int id)
+        public bool AddCatalog(string name, string genus, int price)
+        {
+            using (DataClasses1DataContext context = new DataClasses1DataContext())
+            {
+                catalog newCatalog = new catalog
+                {
+                    catalog_id = context.catalogs.Count() + 1,
+                    catalog_name = name,
+                    catalog_genus = genus,
+                    catalog_price = price,
+                    catalog_quantity = 0,
+                };
+                context.catalogs.InsertOnSubmit(newCatalog);
+                context.SubmitChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public CatalogDTO GetCatalog(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -66,7 +87,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<CatalogDTO> GetAllCatalogs()
+        public IEnumerable<CatalogDTO> GetAllCatalogs()
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -82,7 +103,7 @@ namespace Services
             }
         }
 
-        static public CatalogDTO GetCatalogByName(string name)
+        public CatalogDTO GetCatalogByName(string name)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -92,7 +113,7 @@ namespace Services
             }
         }
 
-        static public IEnumerable<CatalogDTO> GetCatalogsByGenus(string genus)
+        public IEnumerable<CatalogDTO> GetCatalogsByGenus(string genus)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -141,7 +162,7 @@ namespace Services
         //    return temp;
         //}
 
-        static public bool UpdateName(int id, string name)
+        public bool UpdateName(int id, string name)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -155,7 +176,7 @@ namespace Services
             }
         }
 
-        static public bool UpdateGenus(int id, string genus)
+        public bool UpdateGenus(int id, string genus)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -169,7 +190,7 @@ namespace Services
             }
         }
 
-        static public bool UpdatePrice(int id, int price)
+        public bool UpdatePrice(int id, int price)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -183,7 +204,7 @@ namespace Services
             }
         }
 
-        static public bool UpdateQuantity(int id, int quantity)
+        public bool UpdateQuantity(int id, int quantity)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {
@@ -197,7 +218,7 @@ namespace Services
             }
         }
 
-        static public bool DeleteCatalog(int id)
+        public bool DeleteCatalog(int id)
         {
             using (DataClasses1DataContext context = new DataClasses1DataContext())
             {

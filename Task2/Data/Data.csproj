@@ -49,6 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\IDataApi.cs" />
+    <Compile Include="BuyEvent.cs" />
+    <Compile Include="Catalog.cs" />
+    <Compile Include="API\Event.cs" />
+    <Compile Include="API\ICatalog.cs" />
+    <Compile Include="API\IEvent.cs" />
+    <Compile Include="API\IUser.cs" />
+    <Compile Include="RestockEvent.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Repository.cs" />
     <Compile Include="LINQtoSQL.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

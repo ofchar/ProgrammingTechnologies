@@ -13,38 +13,45 @@ namespace ServicesTest
     {
         private void PrepareDatabase()
         {
-            UserCRUD.AddUser(1, "Bleksandra", "Augajska");
-            UserCRUD.AddUser(2, "Pukasz", "Łorembski");
-            UserCRUD.AddUser(3, "Sarysia", "Mtasiak");
-            UserCRUD.AddUser(4, "Zarolina", "Kaborowska");
+            UserCRUD userService = new UserCRUD();
+            CatalogCRUD catalogService = new CatalogCRUD();
 
-            CatalogCRUD.AddCatalog(1, "Gogh", "Car", 3721, 1237);
-            CatalogCRUD.AddCatalog(2, "Picasso", "Zielony", 7321, 2137);
-            CatalogCRUD.AddCatalog(3, "Vivaldi", "Year", 1273, 7321);
-            CatalogCRUD.AddCatalog(4, "Bethoven", "Ślepy", 7123, 7231);
+            userService.AddUser(1, "Bleksandra", "Augajska");
+            userService.AddUser(2, "Pukasz", "Łorembski");
+            userService.AddUser(3, "Sarysia", "Mtasiak");
+            userService.AddUser(4, "Zarolina", "Kaborowska");
+
+            catalogService.AddCatalog(1, "Gogh", "Car", 3721, 1237);
+            catalogService.AddCatalog(2, "Picasso", "Zielony", 7321, 2137);
+            catalogService.AddCatalog(3, "Vivaldi", "Year", 1273, 7321);
+            catalogService.AddCatalog(4, "Bethoven", "Ślepy", 7123, 7231);
         }
 
         private void UnprepareDatabase()
         {
-            UserCRUD.DeleteUser(1);
-            UserCRUD.DeleteUser(2);
-            UserCRUD.DeleteUser(3);
-            UserCRUD.DeleteUser(4);
+            UserCRUD userService = new UserCRUD();
+            CatalogCRUD catalogService = new CatalogCRUD();
 
-            CatalogCRUD.DeleteCatalog(1);
-            CatalogCRUD.DeleteCatalog(2);
-            CatalogCRUD.DeleteCatalog(3);
-            CatalogCRUD.DeleteCatalog(4);
+            userService.DeleteUser(1);
+            userService.DeleteUser(2);
+            userService.DeleteUser(3);
+            userService.DeleteUser(4);
+
+            catalogService.DeleteCatalog(1);
+            catalogService.DeleteCatalog(2);
+            catalogService.DeleteCatalog(3);
+            catalogService.DeleteCatalog(4);
         }
 
         [TestMethod]
         public void AddEventTest()
         {
             PrepareDatabase();
+            EventCRUD eventService = new EventCRUD();
 
-            Assert.IsTrue(EventCRUD.AddEvent(1, DateTime.Now, true, 6, 1, 2));
+            Assert.IsTrue(eventService.AddEvent(1, DateTime.Now, true, 6, 1, 2));
 
-            Assert.IsTrue(EventCRUD.DeleteEvent(1));
+            Assert.IsTrue(eventService.DeleteEvent(1));
 
             UnprepareDatabase();
         }
@@ -53,10 +60,11 @@ namespace ServicesTest
         public void GetEventTest()
         {
             PrepareDatabase();
+            EventCRUD eventService = new EventCRUD();
 
-            EventCRUD.AddEvent(17, DateTime.Now, false, 72, 4, 3);
-            Assert.AreEqual(EventCRUD.GetEvent(17).Amount, 72);
-            EventCRUD.DeleteEvent(17);
+            eventService.AddEvent(17, DateTime.Now, false, 72, 4, 3);
+            Assert.AreEqual(eventService.GetEvent(17).Amount, 72);
+            eventService.DeleteEvent(17);
 
             UnprepareDatabase();
         }
@@ -65,13 +73,15 @@ namespace ServicesTest
         public void GetAllEventsTest()
         {
             PrepareDatabase();
-            EventCRUD.AddEvent(1, DateTime.Now, false, 10, 1, 1);
+            EventCRUD eventService = new EventCRUD();
 
-            IEnumerable<EventDTO> events = EventCRUD.GetAllEvents();
+            eventService.AddEvent(1, DateTime.Now, false, 10, 1, 1);
+
+            IEnumerable<EventDTO> events = eventService.GetAllEvents();
             Assert.AreEqual(events.Count(), 1);
             Assert.AreEqual(events.ElementAt(0).Id, 1);
 
-            EventCRUD.DeleteEvent(1);
+            eventService.DeleteEvent(1);
             UnprepareDatabase();
         }
 
@@ -79,17 +89,19 @@ namespace ServicesTest
         public void GetEventsByUserTest()
         {
             PrepareDatabase();
-            EventCRUD.AddEvent(1, DateTime.Now, false, 10, 1, 1);
-            EventCRUD.AddEvent(2, DateTime.Now, true, 15, 2, 1);
-            EventCRUD.AddEvent(3, DateTime.Now, false, 20, 3, 2);
+            EventCRUD eventService = new EventCRUD();
 
-            IEnumerable<EventDTO> events = EventCRUD.GetEventsByUser(1);
+            eventService.AddEvent(1, DateTime.Now, false, 10, 1, 1);
+            eventService.AddEvent(2, DateTime.Now, true, 15, 2, 1);
+            eventService.AddEvent(3, DateTime.Now, false, 20, 3, 2);
+
+            IEnumerable<EventDTO> events = eventService.GetEventsByUser(1);
             Assert.AreEqual(events.Count(), 2);
             Assert.AreEqual(events.ElementAt(0).Id, 1);
 
-            EventCRUD.DeleteEvent(1);
-            EventCRUD.DeleteEvent(2);
-            EventCRUD.DeleteEvent(3);
+            eventService.DeleteEvent(1);
+            eventService.DeleteEvent(2);
+            eventService.DeleteEvent(3);
             UnprepareDatabase();
         }
 
@@ -97,17 +109,19 @@ namespace ServicesTest
         public void GetEventsByCatalogTest()
         {
             PrepareDatabase();
-            EventCRUD.AddEvent(1, DateTime.Now, false, 10, 1, 1);
-            EventCRUD.AddEvent(2, DateTime.Now, true, 15, 2, 1);
-            EventCRUD.AddEvent(3, DateTime.Now, false, 20, 2, 2);
+            EventCRUD eventService = new EventCRUD(); 
+            
+            eventService.AddEvent(1, DateTime.Now, false, 10, 1, 1);
+            eventService.AddEvent(2, DateTime.Now, true, 15, 2, 1);
+            eventService.AddEvent(3, DateTime.Now, false, 20, 2, 2);
 
-            IEnumerable<EventDTO> events = EventCRUD.GetEventsByCatalog(2);
+            IEnumerable<EventDTO> events = eventService.GetEventsByCatalog(2);
             Assert.AreEqual(events.Count(), 2);
             Assert.AreEqual(events.ElementAt(0).Id, 2);
 
-            EventCRUD.DeleteEvent(1);
-            EventCRUD.DeleteEvent(2);
-            EventCRUD.DeleteEvent(3);
+            eventService.DeleteEvent(1);
+            eventService.DeleteEvent(2);
+            eventService.DeleteEvent(3);
             UnprepareDatabase();
         }
 
@@ -115,17 +129,19 @@ namespace ServicesTest
         public void GetEventsByTypeTest()
         {
             PrepareDatabase();
-            EventCRUD.AddEvent(1, DateTime.Now, false, 10, 1, 1);
-            EventCRUD.AddEvent(2, DateTime.Now, true, 15, 2, 1);
-            EventCRUD.AddEvent(3, DateTime.Now, true, 20, 3, 2);
+            EventCRUD eventService = new EventCRUD();
 
-            IEnumerable<EventDTO> events = EventCRUD.GetEventsByType(true);
+            eventService.AddEvent(1, DateTime.Now, false, 10, 1, 1);
+            eventService.AddEvent(2, DateTime.Now, true, 15, 2, 1);
+            eventService.AddEvent(3, DateTime.Now, true, 20, 3, 2);
+
+            IEnumerable<EventDTO> events = eventService.GetEventsByType(true);
             Assert.AreEqual(events.Count(), 2);
             Assert.AreEqual(events.ElementAt(0).Id, 2);
 
-            EventCRUD.DeleteEvent(1);
-            EventCRUD.DeleteEvent(2);
-            EventCRUD.DeleteEvent(3);
+            eventService.DeleteEvent(1);
+            eventService.DeleteEvent(2);
+            eventService.DeleteEvent(3);
             UnprepareDatabase();
         }
 
@@ -133,17 +149,19 @@ namespace ServicesTest
         public void GetEventsByUserNamesTest()
         {
             PrepareDatabase();
-            EventCRUD.AddEvent(1, DateTime.Now, false, 10, 1, 1);
-            EventCRUD.AddEvent(2, DateTime.Now, true, 15, 2, 1);
-            EventCRUD.AddEvent(3, DateTime.Now, false, 20, 3, 2);
+            EventCRUD eventService = new EventCRUD();
 
-            IEnumerable<EventDTO> events = EventCRUD.GetEventsByUserNames("Bleksandra", "Augajska");
+            eventService.AddEvent(1, DateTime.Now, false, 10, 1, 1);
+            eventService.AddEvent(2, DateTime.Now, true, 15, 2, 1);
+            eventService.AddEvent(3, DateTime.Now, false, 20, 3, 2);
+
+            IEnumerable<EventDTO> events = eventService.GetEventsByUserNames("Bleksandra", "Augajska");
             Assert.AreEqual(events.Count(), 2);
             Assert.AreEqual(events.ElementAt(0).Id, 1);
 
-            EventCRUD.DeleteEvent(1);
-            EventCRUD.DeleteEvent(2);
-            EventCRUD.DeleteEvent(3);
+            eventService.DeleteEvent(1);
+            eventService.DeleteEvent(2);
+            eventService.DeleteEvent(3);
             UnprepareDatabase();
         }
     }

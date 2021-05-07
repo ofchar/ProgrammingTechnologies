@@ -14,52 +14,60 @@ namespace ServicesTest
         [TestMethod]
         public void AddUserTest()
         {
-            Assert.IsTrue(UserCRUD.AddUser(67, "Jan", "Paweł the second"));
-            Assert.IsTrue(UserCRUD.DeleteUser(67));
+            UserCRUD userService = new UserCRUD();
+
+            Assert.IsTrue(userService.AddUser(67, "Jan", "Paweł the second"));
+            Assert.IsTrue(userService.DeleteUser(67));
         }
 
         [TestMethod]
         public void GetUserTest()
         {
-            UserCRUD.AddUser(88, "Chloe", "Price");
+            UserCRUD userService = new UserCRUD();
 
-            Assert.AreEqual(UserCRUD.GetUser(88).FirstName, "Chloe");
-            Assert.AreEqual(UserCRUD.GetUserByLastName("Price").Id, (88));
-            Assert.AreEqual(UserCRUD.GetUserByNames("Chloe", "Price").Id, 88);
+            userService.AddUser(88, "Chloe", "Price");
 
-            UserCRUD.DeleteUser(88);
+            Assert.AreEqual(userService.GetUser(88).FirstName, "Chloe");
+            Assert.AreEqual(userService.GetUserByLastName("Price").Id, (88));
+            Assert.AreEqual(userService.GetUserByNames("Chloe", "Price").Id, 88);
+
+            userService.DeleteUser(88);
         }
 
         [TestMethod]
         public void UpdateUserTest()
         {
-            UserCRUD.AddUser(11, "Max", "Verstappen");
+            UserCRUD userService = new UserCRUD();
 
-            Assert.IsTrue(UserCRUD.UpdateLastName(11, "Caulfield"));
-            Assert.AreEqual(UserCRUD.GetUser(11).LastName, "Caulfield");
+            userService.AddUser(11, "Max", "Verstappen");
 
-            Assert.IsTrue(UserCRUD.UpdateFirstName(11, "Timothy"));
-            Assert.AreEqual(UserCRUD.GetUserByLastName("Caulfield").FirstName, "Timothy");
+            Assert.IsTrue(userService.UpdateLastName(11, "Caulfield"));
+            Assert.AreEqual(userService.GetUser(11).LastName, "Caulfield");
 
-            UserCRUD.DeleteUser(11);
+            Assert.IsTrue(userService.UpdateFirstName(11, "Timothy"));
+            Assert.AreEqual(userService.GetUserByLastName("Caulfield").FirstName, "Timothy");
+
+            userService.DeleteUser(11);
         }
 
         [TestMethod]
         public void GetUsersTest()
         {
-            UserCRUD.AddUser(16, "Wartłomiej", "Błodarski");
-            UserCRUD.AddUser(19, "Kaciej", "Mopa");
-            UserCRUD.AddUser(22, "Wartłomiej", "Bubicki");
+            UserCRUD userService = new UserCRUD();
 
-            IEnumerable<UserDTO> users = UserCRUD.GetUsersByFirstName("Wartłomiej");
+            userService.AddUser(16, "Wartłomiej", "Błodarski");
+            userService.AddUser(19, "Kaciej", "Mopa");
+            userService.AddUser(22, "Wartłomiej", "Bubicki");
+
+            IEnumerable<UserDTO> users = userService.GetUsersByFirstName("Wartłomiej");
 
             Assert.AreEqual(users.Count(), 2);
             Assert.AreEqual(users.ElementAt(0).LastName, "Błodarski");
             Assert.AreEqual(users.ElementAt(1).Id, 22);
 
-            UserCRUD.DeleteUser(16);
-            UserCRUD.DeleteUser(19);
-            UserCRUD.DeleteUser(22);
+            userService.DeleteUser(16);
+            userService.DeleteUser(19);
+            userService.DeleteUser(22);
         }
     }
 }

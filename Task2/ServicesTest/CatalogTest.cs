@@ -14,74 +14,84 @@ namespace ServicesTest
         [TestMethod]
         public void AddCatalogTest()
         {
-            Assert.IsTrue(CatalogCRUD.AddCatalog(69, "Monstera", "Monsterowate", 420, 10));
+            CatalogCRUD catalogService = new CatalogCRUD();
 
-            Assert.IsTrue(CatalogCRUD.DeleteCatalog(69));
+            Assert.IsTrue(catalogService.AddCatalog(69, "Monstera", "Monsterowate", 420, 10));
+
+            Assert.IsTrue(catalogService.DeleteCatalog(69));
         }
 
         [TestMethod]
         public void GetCatalogTest()
         {
-            CatalogCRUD.AddCatalog(420, "Friendship is magic", "magic", 123, 321);
+            CatalogCRUD catalogService = new CatalogCRUD();
 
-            Assert.AreEqual(420, CatalogCRUD.GetCatalog(420).Id);
-            Assert.AreEqual(321, CatalogCRUD.GetCatalogByName("Friendship is magic").Quantity);
+            catalogService.AddCatalog(420, "Friendship is magic", "magic", 123, 321);
 
-            CatalogCRUD.DeleteCatalog(420);
+            Assert.AreEqual(420, catalogService.GetCatalog(420).Id);
+            Assert.AreEqual(321, catalogService.GetCatalogByName("Friendship is magic").Quantity);
+
+            catalogService.DeleteCatalog(420);
         }
 
         [TestMethod]
         public void GetCatalogsTest()
         {
-            CatalogCRUD.AddCatalog(2136, "Rainbow Dash", "Friendship", 68, 68);
-            CatalogCRUD.AddCatalog(2137, "Fluttershy", "Friendship", 69, 69);
-            CatalogCRUD.AddCatalog(2138, "Apple Jack", "Friendship", 70, 70);
+            CatalogCRUD catalogService = new CatalogCRUD();
 
-            IEnumerable<CatalogDTO> catalogs = CatalogCRUD.GetCatalogsByGenus("Friendship");
+            catalogService.AddCatalog(2136, "Rainbow Dash", "Friendship", 68, 68);
+            catalogService.AddCatalog(2137, "Fluttershy", "Friendship", 69, 69);
+            catalogService.AddCatalog(2138, "Apple Jack", "Friendship", 70, 70);
+
+            IEnumerable<CatalogDTO> catalogs = catalogService.GetCatalogsByGenus("Friendship");
             Assert.AreEqual(catalogs.Count(), 3);
             Assert.AreEqual(catalogs.ElementAt(0).Name, "Rainbow Dash");
             Assert.AreEqual(catalogs.ElementAt(1).Id, 2137);
             Assert.AreEqual(catalogs.ElementAt(2).Price, 70);
 
-            CatalogCRUD.DeleteCatalog(2136);
-            CatalogCRUD.DeleteCatalog(2137);
-            CatalogCRUD.DeleteCatalog(2138);
+            catalogService.DeleteCatalog(2136);
+            catalogService.DeleteCatalog(2137);
+            catalogService.DeleteCatalog(2138);
         }
 
         [TestMethod]
         public void GetAllCatalogsTest()
         {
-            CatalogCRUD.AddCatalog(2136, "Rambo", "Bambos", 68, 68);
-            CatalogCRUD.AddCatalog(2137, "Bambo", "Bambos", 69, 69);
-            CatalogCRUD.AddCatalog(2138, "Kambo", "Bambos", 70, 70);
+            CatalogCRUD catalogService = new CatalogCRUD();
 
-            IEnumerable<CatalogDTO> catalogs = CatalogCRUD.GetAllCatalogs();
+            catalogService.AddCatalog(2136, "Rambo", "Bambos", 68, 68);
+            catalogService.AddCatalog(2137, "Bambo", "Bambos", 69, 69);
+            catalogService.AddCatalog(2138, "Kambo", "Bambos", 70, 70);
+
+            IEnumerable<CatalogDTO> catalogs = catalogService.GetAllCatalogs();
 
             Assert.AreEqual(catalogs.Count(), 3);
 
-            CatalogCRUD.DeleteCatalog(2136);
-            CatalogCRUD.DeleteCatalog(2137);
-            CatalogCRUD.DeleteCatalog(2138);
+            catalogService.DeleteCatalog(2136);
+            catalogService.DeleteCatalog(2137);
+            catalogService.DeleteCatalog(2138);
         }
 
         [TestMethod]
         public void UpdateDonutTest()
         {
-            CatalogCRUD.AddCatalog(14, "Walter White", "Cooking", 96, 69);
+            CatalogCRUD catalogService = new CatalogCRUD();
 
-            Assert.IsTrue(CatalogCRUD.UpdateGenus(14, "Meth"));
-            Assert.AreEqual(CatalogCRUD.GetCatalog(14).Genus, "Meth");
+            catalogService.AddCatalog(14, "Walter White", "Cooking", 96, 69);
 
-            Assert.IsTrue(CatalogCRUD.UpdateName(14, "Jesse Pinkman"));
-            Assert.AreEqual(CatalogCRUD.GetCatalog(14).Name, "Jesse Pinkman");
+            Assert.IsTrue(catalogService.UpdateGenus(14, "Meth"));
+            Assert.AreEqual(catalogService.GetCatalog(14).Genus, "Meth");
 
-            Assert.IsTrue(CatalogCRUD.UpdatePrice(14, 420));
-            Assert.AreEqual(CatalogCRUD.GetCatalog(14).Price, 420);
+            Assert.IsTrue(catalogService.UpdateName(14, "Jesse Pinkman"));
+            Assert.AreEqual(catalogService.GetCatalog(14).Name, "Jesse Pinkman");
 
-            Assert.IsTrue(CatalogCRUD.UpdateQuantity(14, 2137));
-            Assert.AreEqual(CatalogCRUD.GetCatalog(14).Quantity, 2137);
+            Assert.IsTrue(catalogService.UpdatePrice(14, 420));
+            Assert.AreEqual(catalogService.GetCatalog(14).Price, 420);
 
-            CatalogCRUD.DeleteCatalog(14);
+            Assert.IsTrue(catalogService.UpdateQuantity(14, 2137));
+            Assert.AreEqual(catalogService.GetCatalog(14).Quantity, 2137);
+
+            catalogService.DeleteCatalog(14);
         }
     }
 }

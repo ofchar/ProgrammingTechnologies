@@ -328,13 +328,17 @@ namespace Data
         {
             if (GetCatalog(catalog_id) != null && GetUser(user_id) != null)
             {
-                if (GetCatalog(catalog_id).Quantity > amount)
+                if (GetCatalog(catalog_id).Quantity >= amount)
                 {
                     int eId = context.@event.Count() + 1;
                     
                     AddBuyEvent(eId, DateTime.Today, amount, catalog_id, user_id);
 
                     UpdateCatalogQuantity(catalog_id, (GetCatalog(catalog_id).Quantity - amount));
+                }
+                else
+                {
+                    throw new Exception("not enough product in stock");
                 }
             }
         }
@@ -351,5 +355,15 @@ namespace Data
             }
         }
         #endregion
+
+
+
+
+        public void NukeTheData()
+        {
+            context.ExecuteCommand("DELETE FROM events");
+            context.ExecuteCommand("DELETE FROM catalogs");
+            context.ExecuteCommand("DELETE FROM users");
+        }
     }
 }

@@ -15,6 +15,11 @@ namespace Services
             repository = new Repository();
         }
 
+        public UserCRUD(IDataApi repository)
+        {
+            this.repository = repository;
+        }
+
 
         private static UserDTO Map(IUser user)
         {

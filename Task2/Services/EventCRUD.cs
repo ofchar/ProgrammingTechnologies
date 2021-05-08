@@ -17,6 +17,11 @@ namespace Services
             repository = new Repository();
         }
 
+        public EventCRUD(IDataApi repository)
+        {
+            this.repository = repository;
+        }
+
         private static EventDTO Map(IEvent e)
         {
             if (e == null)
@@ -71,14 +76,14 @@ namespace Services
 
         public bool BuyCatalog(int catalog_id, int user_id, int amount)
         {
-            repository.AddBuyEvent(DateTime.Now, amount, catalog_id, user_id);
+            repository.BuyCatalog(catalog_id, user_id, amount);
 
             return true;
         }
 
         public bool RestockCatalog(int catalog_id, int user_id, int amount)
         {
-            repository.AddRestockEvent(DateTime.Now, amount, catalog_id, user_id);
+            repository.RestockCatalog(catalog_id, user_id, amount);
 
             return true;
         }

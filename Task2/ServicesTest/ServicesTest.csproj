@@ -74,10 +74,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CatalogTest.cs" />
+    <Compile Include="DataServicesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserTests.cs" />
-    <Compile Include="EventTest.cs" />
+    <Compile Include="TestCatalog.cs" />
+    <Compile Include="TestDataRepository.cs" />
+    <Compile Include="TestBuyEvent.cs" />
+    <Compile Include="TestRestockEvent.cs" />
+    <Compile Include="TestUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

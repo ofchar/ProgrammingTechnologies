@@ -16,6 +16,11 @@ namespace Services
             repository = new Repository();
         }
 
+        public CatalogCRUD(IDataApi repository)
+        {
+            this.repository = repository;
+        }
+
         private CatalogDTO Map(ICatalog catalog)
         {
             if(catalog == null)

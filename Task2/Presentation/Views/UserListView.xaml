@@ -46,41 +46,23 @@
             </Style>
         </Grid.Resources>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="200"/>
-            <ColumnDefinition Width="Auto" MinWidth="200"/>
-            <ColumnDefinition Width="Auto" MinWidth="200"/>
-            <ColumnDefinition Width="Auto" MinWidth="134.667"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MaxHeight="50"/>
-            <RowDefinition Height="Auto" MaxHeight="50"/>
-            <RowDefinition Height="Auto" MaxHeight="50"/>
-            <RowDefinition Height="Auto" MaxHeight="50"/>
-            <RowDefinition  Height="Auto" MaxHeight="500"/>
-        </Grid.RowDefinitions>
-
-        <Label Grid.Column="0" Grid.Row="1" Margin="35,4,243,4" Content="First Name:" Grid.ColumnSpan="2"/>
-        <TextBox Grid.Row="1" Margin="204,4,0,3.778" HorizontalAlignment="Left" Width="200"
+        <Label Margin="19,10,1437,720" Content="First Name:"/>
+        <TextBox Margin="110,10,0,705" HorizontalAlignment="Left" Width="176"
                  Text=
                  "{Binding FirstName, 
             ValidatesOnDataErrors=True,
-            UpdateSourceTrigger=PropertyChanged}"
-                 Grid.ColumnSpan="2"/>
+            UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Label Grid.Column="0" Grid.Row="2" Margin="0,4.222,9.778,3.556" Content="Last Name:" HorizontalAlignment="Right" Width="196"/>
-        <TextBox Grid.Row="2" Margin="204,4.222,0,3.556" HorizontalAlignment="Left"  Width="200"
+        <Label Margin="0,45,1455,688" Content="Last Name:" HorizontalAlignment="Right" Width="91"/>
+        <TextBox Margin="110,55,0,664" HorizontalAlignment="Left"  Width="198"
                  Text="{Binding LastName,
             ValidatesOnDataErrors=True, 
-            UpdateSourceTrigger=PropertyChanged}"
-                 Grid.ColumnSpan="2"/>
+            UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Button Grid.Row="1"
+        <Button
                 Content="Add User"
                 Command="{Binding AddCommand}"
-                RenderTransformOrigin="0.5,0.5" Margin="198,4,162,10"
-                Width="130" Grid.ColumnSpan="2" Grid.Column="1"
+                RenderTransformOrigin="0.5,0.5" Margin="332,10,957,712"
                 Background="ForestGreen"/>
 
         <ListView 
@@ -89,7 +71,7 @@
                   SelectedItem="{Binding SelectedVM}" 
                   HorizontalAlignment="Center"
                   Height="500"
-                  RenderTransformOrigin="0.5,0.5" Grid.Row="4" Grid.ColumnSpan="3" Width="563" Margin="76,35,104,-84">
+                  RenderTransformOrigin="0.5,0.5" Width="562" Margin="28,124,970,136">
 
             <ListView.View>
                 <GridView>
@@ -99,17 +81,25 @@
             </ListView.View>
         </ListView>
 
-        <Button Grid.Column="1" Grid.Row="2" Width="130"
+        <Button
                 Command="{Binding DeleteCommand}" 
-                RenderTransformOrigin="0.5,0.5" Margin="203,4,156,9" Grid.ColumnSpan="2"
+                RenderTransformOrigin="0.5,0.5" Margin="337,45,1108,671"
                 Content="Remove User"
                 Background="IndianRed">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="14.075"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="14.416"/>
+                </TransformGroup>
+            </Button.RenderTransform>
         </Button>
 
-        <Grid Grid.Column="3" Grid.Row="4" Margin="0,36,23,-36"
+        <Grid Margin="0,36,23,-36"
             Visibility="{Binding IsUserViewModelSelectedVisibility}">
             <local:UserItemView DataContext="{Binding SelectedVM}"
-                                  Margin="0.444,0.333,-283.333,-0.444"/>
+                                  Margin="606,92,-47,140"/>
         </Grid>
     </Grid>
 </UserControl>

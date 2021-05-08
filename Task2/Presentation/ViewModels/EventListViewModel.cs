@@ -54,10 +54,15 @@ namespace Presentation.ViewModels
         #region private methods
         private void AddBuyEvent()
         {
-            if (!_Service.BuyCatalog(CatalogId, UserId, Amount))
+            try 
+            {
+                _Service.BuyCatalog(CatalogId, UserId, Amount);
+            }
+            catch (Exception e)
             {
                 ShowPopup("An error occured :(((");
             }
+
             GetEvents();
         }
 

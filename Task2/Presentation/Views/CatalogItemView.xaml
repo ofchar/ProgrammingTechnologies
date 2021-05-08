@@ -66,8 +66,8 @@
         <Label HorizontalAlignment="Center" Content="{Binding Id}" FontSize="15" Margin="71,51,25,328" Width="197" BorderThickness="2" BorderBrush="Pink"/>
         <Label HorizontalAlignment="Center" Content="{Binding Name}" FontSize="15" Margin="95,93,1,286" Width="197" BorderThickness="2" BorderBrush="Pink"/>
         <Label HorizontalAlignment="Center" Content="{Binding Genus}" FontSize="15" Margin="95,132,1,247" Width="197" BorderThickness="2" BorderBrush="Pink"/>
-        <Label HorizontalAlignment="Center" Content="{Binding Quantity}" FontSize="15" Margin="89,112,32,267" Width="142" BorderThickness="2" BorderBrush="Pink" Grid.Column="1"/>
-        <Label HorizontalAlignment="Center" Content="{Binding Price}" FontSize="15" Margin="115,51,15,328" Width="133" BorderThickness="2" BorderBrush="Pink" Grid.Column="1"/>
+        <Label HorizontalAlignment="Center" Content="{Binding Price}" FontSize="15" Margin="89,112,32,267" Width="142" BorderThickness="2" BorderBrush="Pink" Grid.Column="1"/>
+        <Label HorizontalAlignment="Center" Content="{Binding Quantity}" FontSize="15" Margin="115,51,15,328" Width="133" BorderThickness="2" BorderBrush="Pink" Grid.Column="1"/>
 
         <Label Content="Change something if u want" FontSize="20px" FontWeight="Medium" HorizontalAlignment="Center" Margin="121,175,169,196" Grid.ColumnSpan="2"/>
 

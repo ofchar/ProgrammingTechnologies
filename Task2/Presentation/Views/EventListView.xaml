@@ -41,15 +41,15 @@
         </Grid.Resources>
 
         <Label FontSize="18" Margin="10,2,866,521" Content="Catalog ID:"/>
-        <TextBox Margin="185,4,0,3" HorizontalAlignment="Left" Width="200"
-                 Text="{Binding CatalogId, ValidatesOnDataErrors=true, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
+        <TextBox Margin="185,4,0,510" HorizontalAlignment="Left" Width="200"
+                 Text="{Binding CatalogId, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Label FontSize="18" Margin="24,50,826,473" Content="User ID:"/>
-        <TextBox Margin="185,56,0,-49" HorizontalAlignment="Left"  Width="200"
+        <TextBox Margin="185,56,0,457" HorizontalAlignment="Left"  Width="200"
                  Text="{Binding UserId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Label FontSize="18" Margin="28,91,822,424" Content="Amount:" RenderTransformOrigin="0.5,0.5"/>
-        <TextBox Margin="204,108,0,-101" HorizontalAlignment="Left"  Width="200"
+        <TextBox Margin="204,108,0,409" HorizontalAlignment="Left"  Width="200"
                  Text="{Binding Amount, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
 

@@ -10,7 +10,7 @@ namespace DataTest
     [TestClass]
     public class DataTest
     {
-        private string sqlString = "Data Source = DESKTOP-2JETCTM; Initial Catalog = ptdb; Integrated Security = True";
+        private string sqlString = "Data Source = DESKTOP-2JETCTM; Initial Catalog = testDB; Integrated Security = True";
 
         [TestMethod]
         public void AddFlowerToDatabase()

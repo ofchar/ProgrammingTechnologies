@@ -11,18 +11,19 @@ namespace DataTests
     [TestClass]
     public class DataRepositoryTest
     {
+        private string sqlString = "Data Source = DESKTOP-2JETCTM; Initial Catalog = testDB; Integrated Security = True";
+
         public DataRepositoryTest()
         {
-            Repository repository = new Repository();
-            
+            Repository repository = new Repository(sqlString);
+
             repository.NukeTheData();
         }
-
 
         [TestMethod]
         public void AddUser_GetAdded_DeleteTest()
         {
-            Repository repository = new Repository();
+            Repository repository = new Repository(sqlString);
             repository.AddUser(420, "Pukasz", "Łorembski");
 
             Assert.AreEqual("Pukasz", repository.GetUser(420).FirstName);
@@ -34,8 +35,8 @@ namespace DataTests
         [TestMethod]
         public void AddUsers_GetAllAdded()
         {
-            Repository repository = new Repository();
-            
+            Repository repository = new Repository(sqlString);
+
             repository.AddUser(420, "Pukasz", "Łorembski");
             repository.AddUser(421, "i have no", "idea for new names");
 
@@ -48,7 +49,7 @@ namespace DataTests
         [TestMethod]
         public void AddUser_UpdateName()
         {
-            Repository repository = new Repository();
+            Repository repository = new Repository(sqlString);
             repository.AddUser(420, "Pukasz", "Łorembski");
 
             Assert.AreEqual("Pukasz", repository.GetUser(420).FirstName);
@@ -64,7 +65,7 @@ namespace DataTests
         [TestMethod]
         public void AddCatalog_GetAdded_DeleteTest()
         {
-            Repository repository = new Repository();
+            Repository repository = new Repository(sqlString);
             repository.AddCatalog(420, "flower", "genus", 10, 15);
 
             Assert.AreEqual("flower", repository.GetCatalog(420).Name);
@@ -76,7 +77,7 @@ namespace DataTests
         [TestMethod]
         public void AddCatalogs_GetAllAdded()
         {
-            Repository repository = new Repository();
+            Repository repository = new Repository(sqlString);
 
             repository.AddCatalog(420, "flower", "genus", 10, 15);
             repository.AddCatalog(421, "another flower", "please end", 11, 16);
@@ -90,7 +91,7 @@ namespace DataTests
         [TestMethod]
         public void AddCatalog_UpdateName()
         {
-            Repository repository = new Repository();
+            Repository repository = new Repository(sqlString);
             repository.AddCatalog(420, "flower", "genus", 10, 15);
 
             Assert.AreEqual("flower", repository.GetCatalog(420).Name);
@@ -106,7 +107,7 @@ namespace DataTests
         [TestMethod]
         public void AddEvent_GetAdded_DeleteTest()
         {
-            Repository repository = new Repository();
+            Repository repository = new Repository(sqlString);
             repository.AddUser(240, "Pukasz", "Łorembski");
             repository.AddCatalog(420, "flower", "genus", 10, 15);
 

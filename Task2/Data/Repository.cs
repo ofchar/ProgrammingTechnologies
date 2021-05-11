@@ -9,8 +9,17 @@ namespace Data
 {
     public class Repository : IDataApi
     {
-        private DataClasses1DataContext context = new DataClasses1DataContext();
+        private DataClasses1DataContext context;
 
+        public Repository()
+        {
+            context = new DataClasses1DataContext();
+        }
+
+        public Repository(string sqlString)
+        {
+            context = new DataClasses1DataContext(sqlString);
+        }
 
         #region User CRUD
         private IUser Map(user user)

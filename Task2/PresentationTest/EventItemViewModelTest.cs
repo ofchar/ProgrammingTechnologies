@@ -14,10 +14,12 @@ namespace PresentationTest
         [TestMethod]
         public void ConstructorTestOrSth()
         {
-            var EventItemViewModel = new EventItemViewModel(69, DateTime.Now, false, 420, 2137, 7312);
+            DateTime time = DateTime.Now;
+
+            var EventItemViewModel = new EventItemViewModel(69, time, false, 420, 2137, 7312);
 
             Assert.AreEqual(69, EventItemViewModel.Id);
-            Assert.AreEqual(DateTime.Now, EventItemViewModel.Timestamp);
+            Assert.AreEqual(time, EventItemViewModel.Timestamp);
             Assert.IsFalse(EventItemViewModel.IsStocking);
             Assert.AreEqual(420, EventItemViewModel.Amount);
             Assert.AreEqual(2137, EventItemViewModel.CatalogId);
